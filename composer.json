@@ -17,5 +17,8 @@
   }, {
     "name": "Matt Dwen",
     "email": "matt@dwen.co.nz"
-  }]
+  }],
+  "require": {
+    "knplabs/packagist-api": "1.*@dev"
+  }
 }
