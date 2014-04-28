@@ -462,18 +462,24 @@
         $this->logMessage('Checking ' . $package);
 
         // Get the currentVersion
-        $currentVersion = $dependencies[$package];
-        $currentStability = $this->getStability($currentVersion);
-        $versionDesc = $currentVersion;
-        if ($currentStability !== 'stable') {
-          $versionDesc .= '-' . $currentStability;
+        if (!isset($dependencies[$package])) {
+          $this->logMessage($package . ' cannot be found in composer.json');
+          continue;
+        } else {
+          $currentVersion = $dependencies[$package];
+          $currentStability = $this->getStability($currentVersion);
+          $versionDesc = $currentVersion;
+          if ($currentStability !== 'stable') {
+            $versionDesc .= '-' . $currentStability;
+          }
+          $this->logMessage('Installed: ' . $versionDesc, true);
         }
-        $this->logMessage('Installed: ' . $versionDesc, true);
 
         // Get the details from packagist
         try {
           $latest = $packagist->get($package);
         } catch (Guzzle\Http\Exception\ClientErrorResponseException $ex) {
+          $this->logMessage($ex->getMessage());
           continue;
         }
 
