@@ -1,0 +1,21 @@
+{
+  "name": "xplore/composerupdates",
+  "description": "Send email notifications when updates are available to Composer packages",
+  "type": "silverstripe-module",
+  "keywords": [
+    "silverstripe",
+    "composer",
+    "update",
+    "notify",
+    "email"
+  ],
+  "homepage": "https://github.com/XploreNet/silverstripe-composerupdates",
+  "license": "MIT",
+  "authors": [{
+    "name": "Xplore Developers",
+    "email": "developers@xplore.net"
+  }, {
+    "name": "Matt Dwen",
+    "email": "matt@dwen.co.nz"
+  }]
+}
