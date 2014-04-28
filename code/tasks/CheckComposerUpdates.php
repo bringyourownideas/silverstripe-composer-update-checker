@@ -471,7 +471,12 @@
         $this->logMessage('Installed: ' . $versionDesc, true);
 
         // Get the details from packagist
-        $latest = $packagist->get($package);
+        try {
+          $latest = $packagist->get($package);
+        } catch (Guzzle\Http\Exception\ClientErrorResponseException $ex) {
+          continue;
+        }
+
         $versions = $latest->getVersions();
 
         // Check if there is a newer version
