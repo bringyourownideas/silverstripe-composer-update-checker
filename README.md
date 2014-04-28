@@ -26,8 +26,8 @@ Define who will receive the notification emails in `mysite/_config/config.yml`
 ```
 ComposerUpdates:
   notify:
-    - user1@domain.com
-    - user2@domain.com
+    - 'user1@domain.com'
+    - 'user2@domain.com'
 ```
 
 Define a cron task as often as you require which executes
