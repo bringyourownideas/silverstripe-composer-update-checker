@@ -14,7 +14,7 @@ Configure `_ss_environment.php` so that command line requests don't fail when se
   $_FILE_TO_URL_MAPPING['/path/to/site'] = 'http://my.site.com';
 ```
 
-Set the from address in `mysite/_config/config.yml` [http://doc.silverstripe.com/framework/en/topics/email#administrator-emails]
+Set the from address in `mysite/_config/config.yml` http://doc.silverstripe.com/framework/en/topics/email#administrator-emails
 
 ```
 Email:
@@ -28,4 +28,10 @@ ComposerUpdates:
   notify:
     - user1@domain.com
     - user2@domain.com
+```
+
+Define a cron task as often as you require which executes
+
+```
+/path/to/site/framework/sake CheckComposerUpdates
 ```
