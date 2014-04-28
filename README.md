@@ -3,6 +3,17 @@ silverstripe-composerupdates
 
 Send email notifications when updates are available to Composer packages
 
+Installation
+------------
+
+Add to your `composer.json` configuration
+
+```
+"require": {
+  "xplore/composerupdates": "~0.1"
+}
+```
+
 Configuration
 -------------
 
