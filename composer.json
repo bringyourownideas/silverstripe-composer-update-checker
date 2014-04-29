@@ -19,6 +19,8 @@
     "email": "matt@dwen.co.nz"
   }],
   "require": {
+    "silverstripe/cms": "~3.0",
+    "silverstripe/framework": "~3.0",
     "knplabs/packagist-api": "~1.1"
   }
 }
