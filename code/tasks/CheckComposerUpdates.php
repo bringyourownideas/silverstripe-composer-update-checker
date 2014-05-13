@@ -434,9 +434,11 @@
 
       // Who are sending this to?
       $notify = Config::inst()->get('ComposerUpdates', 'notify');
-      foreach ($notify as $to) {
-        $email->setTo($to);
-        $email->send();
+      if (isset($notify) && is_array($notify)) {
+        foreach ($notify as $to) {
+          $email->setTo($to);
+          $email->send();
+        }
       }
     }
 
