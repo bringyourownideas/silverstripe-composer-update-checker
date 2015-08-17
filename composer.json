@@ -1,26 +1,28 @@
 {
-  "name": "xplore/composerupdates",
-  "description": "Send email notifications when updates are available to Composer packages",
-  "type": "silverstripe-module",
-  "keywords": [
-    "silverstripe",
-    "composer",
-    "update",
-    "notify",
-    "email"
-  ],
-  "homepage": "https://github.com/XploreNet/silverstripe-composerupdates",
-  "license": "MIT",
-  "authors": [{
-    "name": "Xplore Developers",
-    "email": "developers@xplore.net"
-  }, {
-    "name": "Matt Dwen",
-    "email": "matt@dwen.co.nz"
-  }],
-  "require": {
-    "silverstripe/cms": "~3.0",
-    "silverstripe/framework": "~3.0",
-    "knplabs/packagist-api": "~1.1"
-  }
+    "name": "spekulatius/composer-package-update-checker",
+    "description": "Checks if any composer packages can be updated.",
+    "keywords": [
+        "composer",
+        "update",
+        "check"
+    ],
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Peter Thaleikis",
+            "homepage": "https://github.com/spekulatius"
+        },
+        {
+            "name": "Other contributors",
+            "homepage": "https://github.com/spekulatius/composer-package-update-checker/graphs/contributors",
+            "role": "Contributors"
+        }
+    ],
+    "minimum-stability" : "dev",
+    "require": {
+        "php": ">=5.0.0",
+        "silverstripe/framework": "~3.*",
+        "knplabs/packagist-api": "~1.1"
+    }
 }
