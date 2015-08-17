@@ -154,46 +154,46 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 			// Does this meet minimum stability
 			if (!$this->isStableEnough($this->minimumStability, $versionStability)) {
-			continue;
+				continue;
 			}
 
 			if ($this->preferStable) {
-			// A simple php version compare rules out the dumb stuff
-			if (version_compare($bestVersion, $version) !== -1) {
-				continue;
-			}
-			} else {
-			// We're doing a straight version compare
-			$pureBestVersion = $this->getPureVersion($bestVersion);
-			$pureVersion = $this->getPureVersion($version);
-
-			// Checkout the version
-			$continue = false;
-			switch (version_compare($pureBestVersion, $pureVersion)) {
-				case -1:
-				// The version is better, take it
-				break;
-
-				case 0:
-				// The version is the same.
-				// Do another straight version compare to rule out rc1 vs rc2 etc...
-				if ($bestStability == $versionStability) {
-					if (version_compare($bestVersion, $version) !== -1) {
-					$continue = true;
-					break;
-					}
+				// A simple php version compare rules out the dumb stuff
+				if (version_compare($bestVersion, $version) !== -1) {
+					continue;
 				}
-				break;
+			} else {
+				// We're doing a straight version compare
+				$pureBestVersion = $this->getPureVersion($bestVersion);
+				$pureVersion = $this->getPureVersion($version);
 
-				case 1:
-				// The version is worse, ignore it
-				$continue = true;
-				break;
-			}
+				// Checkout the version
+				$continue = false;
+				switch (version_compare($pureBestVersion, $pureVersion)) {
+					case -1:
+						// The version is better, take it
+						break;
 
-			if ($continue) {
-				continue;
-			}
+					case 0:
+						// The version is the same.
+						// Do another straight version compare to rule out rc1 vs rc2 etc...
+						if ($bestStability == $versionStability) {
+							if (version_compare($bestVersion, $version) !== -1) {
+								$continue = true;
+								break;
+							}
+						}
+						break;
+
+					case 1:
+						// The version is worse, ignore it
+						$continue = true;
+						break;
+				}
+
+				if ($continue) {
+					continue;
+				}
 			}
 
 			$bestVersion = $version;
@@ -202,7 +202,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 		if ($bestVersion !== $currentVersion || $bestStability !== $currentStability) {
 			if ($bestStability === 'stable') {
-			return $bestVersion;
+				return $bestVersion;
 			}
 
 			return $bestVersion . '-' . $bestStability;
@@ -254,7 +254,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 	private function getLocalPackage($packageName) {
 		foreach($this->composerLock->packages as $package) {
 			if ($package->name == $packageName) {
-			return $package;
+				return $package;
 			}
 		}
 
@@ -387,8 +387,8 @@ class CheckComposerUpdatesTask extends BuildTask {
 		if ($latest != $lastKnown) {
 			// Is it different to what's installed?
 			if ($latest != $installed) {
-			// It's an update!
-			return true;
+				// It's an update!
+				return true;
 			}
 		}
 
@@ -438,8 +438,8 @@ class CheckComposerUpdatesTask extends BuildTask {
 		$notify = Config::inst()->get('ComposerUpdates', 'notify');
 		if (isset($notify) && is_array($notify)) {
 			foreach ($notify as $to) {
-			$email->setTo($to);
-			$email->send();
+				$email->setTo($to);
+				$email->send();
 			}
 		}
 	}
