@@ -15,4 +15,4 @@ composer require spekulatius/composer-package-update-checker
 Future development / Ideas
 --------------------------
 
-* Notifications via the output of dev task (plain text, JSON, XML?)
+* Output information via the dev task (plain text, JSON, XML?)
