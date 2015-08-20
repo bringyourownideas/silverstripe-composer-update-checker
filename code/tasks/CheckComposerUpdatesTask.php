@@ -354,8 +354,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 */
 	private function recordUpdate($package, $installed, $latest) {
 		// Is there a record already for the package?
-		$model = ComposerUpdate::get()
-			->find('Name', $package);
+		$model = ComposerUpdate::get()->find('Name', $package);
 
 		if (!$model) {
 			$model = new ComposerUpdate();
@@ -372,9 +371,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 		}
 
 		// If latest is false, make it the same as installed
-		if ($latest === false) {
-			$latest = $installed;
-		}
+		if ($latest === false) $latest = $installed;
 
 		// Set the new details
 		$model->Installed = $installed;
