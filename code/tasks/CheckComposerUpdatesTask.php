@@ -394,54 +394,6 @@ class CheckComposerUpdatesTask extends BuildTask {
 	}
 
 	/**
-	 * Send email notification of available updates
-	 *
-	 * @param array $updates
-	 */
-	private function emailUpdates($updateArray) {
-		// If there's no updates we don't care
-		if (count($updateArray) < 1) {
-			return;
-		}
-
-		$this->logMessage(PHP_EOL . 'Sending update email', true);
-
-		// Convert the updates to an ArrayList
-		$updates = ArrayList::create();
-		foreach ($updateArray as $update) {
-			$updates->add(ArrayData::create(array(
-			'Package' => $update['package'],
-			'Latest' => $update['latest']
-			)));
-		}
-
-		// Site details
-		$siteName = SiteConfig::current_site_config()->Title;
-
-		// Create the email
-		$email = new Email();
-		$email->setSubject('[SilverStripe] Updates for ' . $siteName);
-
-		// Set the template
-		$email->setTemplate('ComposerUpdateEmail');
-
-		// Fill with what we know
-		$email->populateTemplate(array(
-			'Updates' => $updates,
-			'SiteName' => $siteName
-		));
-
-		// Who are sending this to?
-		$notify = Config::inst()->get('ComposerUpdates', 'notify');
-		if (isset($notify) && is_array($notify)) {
-			foreach ($notify as $to) {
-				$email->setTo($to);
-				$email->send();
-			}
-		}
-	}
-
-	/**
 	 * runs the actual steps to verify if there are updates available
 	 */
 	public function process() {
@@ -451,9 +403,6 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 		// Load the Packagist API
 		$packagist = new Packagist\Api\Client();
-
-		// Record updates we need to notify about
-		$updates = array();
 
 		// Loop through each package
 		foreach($packages as $package) {
@@ -493,18 +442,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 			}
 
 			// Record the result and check if any update is newer than one we knew about before
-			$update = $this->recordUpdate($package, $currentVersion, $result);
-
-			if ($update) {
-				$updates[$package] = array(
-					'package' => $package,
-					'installed' => $versionDesc,
-					'latest' => $result
-				);
-			}
+			$this->recordUpdate($package, $currentVersion, $result);
 		}
-
-		// Email updates
-		$this->emailUpdates($updates);
 	}
 }
