@@ -349,12 +349,12 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 *
 	 * @param string $package Name of the Composer Package
 	 * @param string $installed Currently installed version
-	 * @param string $latest The latest available version
+	 * @param string|boolean $latest The latest available version
 	 * @return bool TRUE if the package can be updated
 	 */
 	private function recordUpdate($package, $installed, $latest) {
 		// Is there a record already for the package?
-		$model = ComposerUpdate::get()->find('Name', $package);
+		$model = ComposerUpdate::get()->filter(array('Name' => $package));
 
 		if (!$model) {
 			$model = new ComposerUpdate();
@@ -364,7 +364,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 		// What was the last known update
 		$lastKnown = $model->Available;
 
-		// If installed is dev-master, get the hash
+		// If installed is dev-master get the hash
 		if ($installed === 'dev-master') {
 			$localPackage = $this->getLocalPackage($package);
 			$installed = $localPackage->source->reference;
@@ -379,18 +379,6 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 		// Save it
 		$model->write();
-
-		// Is the latest different to the last known?
-		if ($latest != $lastKnown) {
-			// Is it different to what's installed?
-			if ($latest != $installed) {
-				// It's an update!
-				return true;
-			}
-		}
-
-		// It's not an update
-		return false;
 	}
 
 	/**
