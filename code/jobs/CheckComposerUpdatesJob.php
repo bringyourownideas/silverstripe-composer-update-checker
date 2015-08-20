@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer Update checker job
+ * Composer Update checker job. Runs the check as a queuedjob.
  *
  * @author Peter Thaleikis
  * @license MIT
