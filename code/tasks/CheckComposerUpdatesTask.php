@@ -6,6 +6,16 @@
  */
 class CheckComposerUpdatesTask extends BuildTask {
 	/**
+	 * @var string
+	 */
+	protected $title = 'Composer update checker';
+
+	/**
+	 * @var string
+	 */
+	protected $description = 'Checks if any composer dependencies can be updated.';
+
+	/**
 	 * Deserialized JSON from composer.lock
 	 *
 	 * @var object
