@@ -444,6 +444,9 @@ class CheckComposerUpdatesTask extends BuildTask {
 		}
 	}
 
+	/**
+	 * runs the actual steps to verify if there are updates available
+	 */
 	public function process() {
 		// Retrieve the packages
 		$packages = $this->getPackages();
@@ -457,7 +460,6 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 		// Loop through each package
 		foreach($packages as $package) {
-			echo PHP_EOL;
 			$this->logMessage('Checking ' . $package);
 
 			// Get the currentVersion
@@ -488,20 +490,20 @@ class CheckComposerUpdatesTask extends BuildTask {
 			$result = $this->hasUpdate($currentVersion, $versions);
 
 			if ($result === false) {
-			$this->logMessage('Up to date');
+				$this->logMessage('Up to date');
 			} else {
-			$this->logMessage('Update to ' . $result);
+				$this->logMessage('Update to ' . $result);
 			}
 
 			// Record the result and check if any update is newer than one we knew about before
 			$update = $this->recordUpdate($package, $currentVersion, $result);
 
 			if ($update) {
-			$updates[$package] = array(
-				'package' => $package,
-				'installed' => $versionDesc,
-				'latest' => $result
-			);
+				$updates[$package] = array(
+					'package' => $package,
+					'installed' => $versionDesc,
+					'latest' => $result
+				);
 			}
 		}
 
