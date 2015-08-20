@@ -395,8 +395,10 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 	/**
 	 * runs the actual steps to verify if there are updates available
+	 *
+	 * @param SS_HTTPRequest $request
 	 */
-	public function process() {
+	public function process(SS_HTTPRequest $request) {
 		// Retrieve the packages
 		$packages = $this->getPackages();
 		$dependencies = $this->getDependencies();
@@ -404,45 +406,28 @@ class CheckComposerUpdatesTask extends BuildTask {
 		// Load the Packagist API
 		$packagist = new Packagist\Api\Client();
 
-		// Loop through each package
+		// run through the packages and check each for updates
 		foreach($packages as $package) {
-			$this->logMessage('Checking ' . $package);
-
-			// Get the currentVersion
+			// verify that we need to check this package.
 			if (!isset($dependencies[$package])) {
-				$this->logMessage($package . ' cannot be found in composer.json');
 				continue;
 			} else {
-				$currentVersion = $dependencies[$package];
-				$currentStability = $this->getStability($currentVersion);
-				$versionDesc = $currentVersion;
-				if ($currentStability !== 'stable') {
-					$versionDesc .= '-' . $currentStability;
+				// get information about this package from packagist.
+				try {
+					$latest = $packagist->get($package);
+				} catch (Guzzle\Http\Exception\ClientErrorResponseException $e) {
+					SS_Log::log($e->getMessage(), WARN);
+					continue;
 				}
-				$this->logMessage('Installed: ' . $versionDesc, true);
+
+				// Check if there is a newer version
+				$result = $this->hasUpdate($dependencies[$package], $latest->getVersions());
+
+				// Check if there is a newer version and if so record the update
+				if ($result !== false) {
+					$this->recordUpdate($package, $currentVersion, $result);
+				}
 			}
-
-			// Get the details from packagist
-			try {
-				$latest = $packagist->get($package);
-			} catch (Guzzle\Http\Exception\ClientErrorResponseException $ex) {
-				$this->logMessage($ex->getMessage());
-				continue;
-			}
-
-			$versions = $latest->getVersions();
-
-			// Check if there is a newer version
-			$result = $this->hasUpdate($currentVersion, $versions);
-
-			if ($result === false) {
-				$this->logMessage('Up to date');
-			} else {
-				$this->logMessage('Update to ' . $result);
-			}
-
-			// Record the result and check if any update is newer than one we knew about before
-			$this->recordUpdate($package, $currentVersion, $result);
 		}
 	}
 }
