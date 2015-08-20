@@ -377,7 +377,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 *
 	 * @param SS_HTTPRequest $request
 	 */
-	public function process(SS_HTTPRequest $request) {
+	public function run(SS_HTTPRequest $request) {
 		// Retrieve the packages
 		$packages = $this->getPackages();
 		$dependencies = $this->getDependencies();
