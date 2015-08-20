@@ -70,12 +70,10 @@ class CheckComposerUpdatesTask extends BuildTask {
 		$this->minimumStability = (isset($composerJson->{'minimum-stability'}))
 			? $composerJson->{'minimum-stability'}
 			: 'stable';
-		$this->logMessage('Minimum stability: ' . $this->minimumStability, true);
 
 		$this->preferStable = (isset($composerJson->{'prefer-stable'}))
 			? $composerJson->{'prefer-stable'}
 			: true;
-		$this->logMessage('Prefer stable: ' . $this->preferStable, true);
 
 		$packages = array();
 		foreach ($composerJson->require as $package => $version) {
@@ -231,17 +229,12 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 		// What's the current hash?
 		$localHash = $localPackage->source->reference;
-		$this->logMessage('Local hash: ' . $localHash, true);
 
 		// What's the latest hash in the available versions
 		$remoteHash = $devMaster->getSource()->getReference();
-		$this->logMessage('Remote hash: ' . $remoteHash, true);
 
-		if ($localHash != $remoteHash) {
-			return $remoteHash;
-		}
-
-		return false;
+		// return either the new hash or false
+		return ($localHash != $remoteHash) ? $remoteHash : false;
 	}
 
 	/**
@@ -258,14 +251,14 @@ class CheckComposerUpdatesTask extends BuildTask {
 			}
 		}
 
-		throw new Exception("Cannot locate local package " . $packageName);
+		throw new Exception('Cannot locate local package ' . $packageName);
 	}
 
 	/**
 	 * Retrieve the pure numerical version
 	 *
 	 * @param string $version
-	 * @return string
+	 * @return string|null
 	 */
 	private function getPureVersion($version) {
 		$matches = array();
@@ -290,7 +283,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 
 		foreach($this->stabilityOptions as $option) {
 			if (strpos($version, $option) !== false) {
-			return $option;
+				return $option;
 			}
 		}
 
@@ -330,18 +323,6 @@ class CheckComposerUpdatesTask extends BuildTask {
 		$possibleIndex = $this->getStabilityIndex($possibleStability);
 
 		return ($possibleIndex >= $minimumIndex);
-	}
-
-	/**
-	 * Write a log message
-	 *
-	 * @param $message
-	 * @param bool $extended
-	 */
-	private function logMessage($message, $extended = false) {
-		if (!$extended || $this->extendedLogging) {
-			echo $message . PHP_EOL;
-		}
 	}
 
 	/**
@@ -412,9 +393,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 				$result = $this->hasUpdate($dependencies[$package], $latest->getVersions());
 
 				// Check if there is a newer version and if so record the update
-				if ($result !== false) {
-					$this->recordUpdate($package, $currentVersion, $result);
-				}
+				if ($result !== false) $this->recordUpdate($package, $currentVersion, $result);
 			}
 		}
 	}
