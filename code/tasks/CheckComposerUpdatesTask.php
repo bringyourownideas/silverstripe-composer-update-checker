@@ -344,15 +344,15 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 * @return bool TRUE if the package can be updated
 	 */
 	private function recordUpdate($package, $installed, $latest) {
-		// Is there a record already for the package? Even its
-		$packages = ComposerUpdate::get()->filter(array('Name' => $package));
+		// Is there a record already for the package? If so find it.
+		$packages = ComposerUpdate::get()->filter(array('Package' => $package));
 
 		// if there is already one use it otherwise create a new data object
 		if ($packages->count() === 1) {
 			$model = $packages->first();
 		} else {
 			$model = new ComposerUpdate();
-			$model->Name = $package;
+			$model->Package = $package;
 		}
 
 		// If installed is dev-master get the hash
