@@ -1,6 +1,6 @@
 <?php
 /**
- * Composer Update checker job. Runs the check as a queuedjob.
+ * Composer update checker job. Runs the check as a queuedjob.
  *
  * @author Peter Thaleikis
  * @license MIT
@@ -30,6 +30,7 @@ class CheckComposerUpdatesJob extends AbstractQueuedJob implements QueuedJob {
 	 */
 	public function getJobType() {
 		$this->totalSteps = 1;
+
 		return QueuedJob::QUEUED;
 	}
 

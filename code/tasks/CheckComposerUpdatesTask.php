@@ -344,14 +344,14 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 */
 	private function recordUpdate($package, $installed, $latest) {
 		// Is there a record already for the package? If so find it.
-		$packages = ComposerUpdate::get()->filter(array('Package' => $package));
+		$packages = ComposerUpdate::get()->filter(array('Name' => $package));
 
 		// if there is already one use it otherwise create a new data object
 		if ($packages->count() === 1) {
-			$model = $packages->first();
+			$update = $packages->first();
 		} else {
-			$model = new ComposerUpdate();
-			$model->Package = $package;
+			$update = new ComposerUpdate();
+			$update->Name = $package;
 		}
 
 		// If installed is dev-master get the hash
@@ -361,9 +361,9 @@ class CheckComposerUpdatesTask extends BuildTask {
 		}
 
 		// Set the new details and save it
-		$model->Installed = $installed;
-		$model->Available = $latest;
-		$model->write();
+		$update->Installed = $installed;
+		$update->Available = $latest;
+		$update->write();
 	}
 
 	/**

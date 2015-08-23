@@ -1,6 +1,6 @@
 <?php
 /**
- * Describes an available update to an installed Composer Package
+ * Describes an available update to an installed Composer package
  *
  * Originally from https://github.com/XploreNet/silverstripe-composerupdates
  */
@@ -9,7 +9,7 @@ class ComposerUpdate extends DataObject {
 	 * @var array
 	 */
 	private static $db = array(
-		'Package'		=> 'Varchar(255)',
+		'Name'			=> 'Varchar(255)',
 		'Installed'		=> 'Varchar(255)',
 		'Available'		=> 'Varchar(255)',
 	);
