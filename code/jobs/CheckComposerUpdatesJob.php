@@ -42,9 +42,13 @@ class CheckComposerUpdatesJob extends AbstractQueuedJob implements QueuedJob {
 	}
 
 	/**
-	 * process the
+	 * processes the task as a job
 	 */
 	public function process() {
+		// run the task
 		$this->task->run(new SS_HTTPRequest());
+
+		// mark job as completed
+		$this->isComplete = true;
 	}
 }
