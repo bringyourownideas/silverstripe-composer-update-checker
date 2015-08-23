@@ -6,7 +6,7 @@
         "update",
         "check"
     ],
-    "type": "project",
+    "type": "silverstripe-module",
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -15,14 +15,14 @@
         },
         {
             "name": "Other contributors",
-            "homepage": "https://github.com/spekulatius/composer-package-update-checker/graphs/contributors",
+            "homepage": "https://github.com/spekulatius/silverstripe-composer-update-checker/graphs/contributors",
             "role": "Contributors"
         }
     ],
     "minimum-stability" : "dev",
     "require": {
         "php": ">=5.0.0",
-        "silverstripe/framework": "~3.*",
+        "silverstripe/framework": "~3.1",
         "knplabs/packagist-api": "~1.1",
         "silverstripe/queuedjobs": "*"
     }
