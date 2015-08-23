@@ -1,4 +1,4 @@
-silverstripe-composerupdates
+SilverStripe composer update checker
 ============================
 
 Checks if your composer dependencies need to be updated.
