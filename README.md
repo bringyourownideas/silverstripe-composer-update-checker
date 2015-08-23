@@ -9,7 +9,7 @@ Installation
 ------------
 
 ```
-composer require spekulatius/composer-package-update-checker
+composer require spekulatius/silverstripe-composer-update-checker
 ```
 
 Future development / Ideas
