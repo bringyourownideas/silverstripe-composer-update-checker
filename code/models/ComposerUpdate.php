@@ -3,6 +3,9 @@
  * Describes an available update to an installed Composer package
  *
  * Originally from https://github.com/XploreNet/silverstripe-composerupdates
+ *
+ * @author Matt Dwen
+ * @license MIT
  */
 class ComposerUpdate extends DataObject {
 	/**

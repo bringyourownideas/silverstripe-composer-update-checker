@@ -3,6 +3,9 @@
  * Task which does the actual checking of updates
  *
  * Originally from https://github.com/XploreNet/silverstripe-composerupdates
+ *
+ * @author Matt Dwen
+ * @license MIT
  */
 class CheckComposerUpdatesTask extends BuildTask {
 	/**
