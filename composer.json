@@ -1,28 +1,38 @@
 {
-    "name": "spekulatius/composer-package-update-checker",
+    "name": "spekulatius/silverstripe-composer-update-checker",
     "description": "Checks if any composer packages can be updated.",
     "keywords": [
         "composer",
         "update",
         "check"
     ],
-    "type": "project",
-    "license": "BSD-3-Clause",
+    "type": "silverstripe-module",
+    "license": "MIT",
     "authors": [
         {
             "name": "Peter Thaleikis",
             "homepage": "https://github.com/spekulatius"
         },
         {
+            "name": "Matt Dwen",
+            "email": "matt@dwen.co.nz",
+            "role": "Contributors"
+        },
+        {
+            "name": "Xplore Developers",
+            "email": "developers@xplore.net",
+            "role": "Contributors"
+        },
+        {
             "name": "Other contributors",
-            "homepage": "https://github.com/spekulatius/composer-package-update-checker/graphs/contributors",
+            "homepage": "https://github.com/spekulatius/silverstripe-composer-update-checker/graphs/contributors",
             "role": "Contributors"
         }
     ],
     "minimum-stability" : "dev",
     "require": {
         "php": ">=5.0.0",
-        "silverstripe/framework": "~3.*",
+        "silverstripe/framework": "~3.1",
         "knplabs/packagist-api": "~1.1",
         "silverstripe/queuedjobs": "*"
     }
