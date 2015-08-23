@@ -341,7 +341,6 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 * @param string $package Name of the Composer Package
 	 * @param string $installed Currently installed version
 	 * @param string|boolean $latest The latest available version
-	 * @return bool TRUE if the package can be updated
 	 */
 	private function recordUpdate($package, $installed, $latest) {
 		// Is there a record already for the package? If so find it.
@@ -361,11 +360,9 @@ class CheckComposerUpdatesTask extends BuildTask {
 			$installed = $localPackage->source->reference;
 		}
 
-		// Set the new details
+		// Set the new details and save it
 		$model->Installed = $installed;
 		$model->Available = $latest;
-
-		// Save it
 		$model->write();
 	}
 
