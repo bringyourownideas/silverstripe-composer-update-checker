@@ -1,5 +1,5 @@
 {
-    "name": "spekulatius/composer-package-update-checker",
+    "name": "spekulatius/silverstripe-composer-update-checker",
     "description": "Checks if any composer packages can be updated.",
     "keywords": [
         "composer",
