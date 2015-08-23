@@ -7,11 +7,21 @@
         "check"
     ],
     "type": "silverstripe-module",
-    "license": "BSD-3-Clause",
+    "license": "MIT",
     "authors": [
         {
             "name": "Peter Thaleikis",
             "homepage": "https://github.com/spekulatius"
+        },
+        {
+            "name": "Matt Dwen",
+            "email": "matt@dwen.co.nz",
+            "role": "Contributors"
+        },
+        {
+            "name": "Xplore Developers",
+            "email": "developers@xplore.net",
+            "role": "Contributors"
         },
         {
             "name": "Other contributors",
