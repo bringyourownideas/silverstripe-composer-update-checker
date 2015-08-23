@@ -344,25 +344,22 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 * @return bool TRUE if the package can be updated
 	 */
 	private function recordUpdate($package, $installed, $latest) {
-		// Is there a record already for the package?
-		$model = ComposerUpdate::get()->filter(array('Name' => $package));
+		// Is there a record already for the package? Even its
+		$packages = ComposerUpdate::get()->filter(array('Name' => $package));
 
-		if (!$model) {
+		// if there is already one use it otherwise create a new data object
+		if ($packages->count() === 1) {
+			$model = $packages->first();
+		} else {
 			$model = new ComposerUpdate();
 			$model->Name = $package;
 		}
-
-		// What was the last known update
-		$lastKnown = $model->Available;
 
 		// If installed is dev-master get the hash
 		if ($installed === 'dev-master') {
 			$localPackage = $this->getLocalPackage($package);
 			$installed = $localPackage->source->reference;
 		}
-
-		// If latest is false, make it the same as installed
-		if ($latest === false) $latest = $installed;
 
 		// Set the new details
 		$model->Installed = $installed;
@@ -377,7 +374,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 	 *
 	 * @param SS_HTTPRequest $request
 	 */
-	public function run(SS_HTTPRequest $request) {
+	public function run($request) {
 		// Retrieve the packages
 		$packages = $this->getPackages();
 		$dependencies = $this->getDependencies();
@@ -395,12 +392,13 @@ class CheckComposerUpdatesTask extends BuildTask {
 				try {
 					$latest = $packagist->get($package);
 				} catch (Guzzle\Http\Exception\ClientErrorResponseException $e) {
-					SS_Log::log($e->getMessage(), WARN);
+					SS_Log::log($e->getMessage(), SS_Log::WARN);
 					continue;
 				}
 
 				// Check if there is a newer version
-				$result = $this->hasUpdate($dependencies[$package], $latest->getVersions());
+				$currentVersion = $dependencies[$package];
+				$result = $this->hasUpdate($currentVersion, $latest->getVersions());
 
 				// Check if there is a newer version and if so record the update
 				if ($result !== false) $this->recordUpdate($package, $currentVersion, $result);
