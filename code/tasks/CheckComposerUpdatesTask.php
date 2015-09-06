@@ -404,5 +404,19 @@ class CheckComposerUpdatesTask extends BuildTask {
 				if ($result !== false) $this->recordUpdate($package, $currentVersion, $result);
 			}
 		}
+
+		// finished message
+		$this->message('The task finished running. You can find the updated information in the database now.');
+	}
+
+	/**
+	 * prints a message during the run of the task
+	 *
+	 * @param string $text
+	 */
+	protected function message($text) {
+		if (PHP_SAPI !== 'cli') $text = '<p>' . $text . '</p>' . PHP_EOL;
+
+		echo $text . PHP_EOL;
 	}
 }
