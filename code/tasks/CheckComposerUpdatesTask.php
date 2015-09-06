@@ -350,7 +350,7 @@ class CheckComposerUpdatesTask extends BuildTask {
 		$packages = ComposerUpdate::get()->filter(array('Name' => $package));
 
 		// if there is already one use it otherwise create a new data object
-		if ($packages->count() === 1) {
+		if ($packages->count() > 0) {
 			$update = $packages->first();
 		} else {
 			$update = new ComposerUpdate();
