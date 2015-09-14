@@ -34,8 +34,9 @@
         "php": ">=5.0.0",
         "silverstripe/framework": "~3.1",
         "knplabs/packagist-api": "~1.1"
-	},
-	"suggest": {
+    },
+    "suggest": {
+        "friendsofsilverstripe/silverstripe-maintenance": "Modeladmin for SilverStripe update checker",
         "silverstripe/queuedjobs": "Allows to run update checker as queuedjob"
     }
 }
