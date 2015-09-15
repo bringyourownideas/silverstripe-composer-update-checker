@@ -12,6 +12,9 @@ Installation
 composer require spekulatius/silverstripe-composer-update-checker
 ```
 
+Please run dev/build after the installation of the package.
+
+
 Future development / Ideas
 --------------------------
 
