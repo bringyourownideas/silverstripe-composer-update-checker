@@ -25,4 +25,9 @@ class ComposerUpdate extends DataObject {
 		'Installed'		=> 'Varchar(255)',
 		'Available'		=> 'Varchar(255)',
 	);
+
+	/**
+	 * name of the related job
+	 */
+	public $jobName = 'CheckComposerUpdatesJob';
 }
