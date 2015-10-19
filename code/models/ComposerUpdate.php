@@ -21,8 +21,8 @@ class ComposerUpdate extends DataObject {
 	 * @var array
 	 */
 	private static $summary_fields = array(
-		'Name'			=> 'Varchar(255)',
-		'Installed'		=> 'Varchar(255)',
-		'Available'		=> 'Varchar(255)',
+		'Name' => 'Package',
+		'Installed',
+		'Available',
 	);
 }
