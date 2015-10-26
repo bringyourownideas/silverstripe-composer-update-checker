@@ -28,6 +28,8 @@ class ComposerUpdate extends DataObject {
 
 	/**
 	 * name of the related job
+	 *
+	 * @var string
 	 */
 	public $jobName = 'CheckComposerUpdatesJob';
 }
