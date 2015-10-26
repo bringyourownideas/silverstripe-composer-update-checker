@@ -25,4 +25,9 @@ class ComposerUpdate extends DataObject {
 		'Installed',
 		'Available',
 	);
+
+	/**
+	 * name of the related job
+	 */
+	public $jobName = 'CheckComposerUpdatesJob';
 }
