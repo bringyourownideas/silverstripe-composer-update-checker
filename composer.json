@@ -29,7 +29,7 @@
             "role": "Contributors"
         }
     ],
-    "minimum-stability" : "dev",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.0.0",
         "silverstripe/framework": "~3.1",
@@ -38,5 +38,9 @@
     "suggest": {
         "friendsofsilverstripe/silverstripe-maintenance": "Modeladmin for SilverStripe update checker",
         "silverstripe/queuedjobs": "Allows to run update checker as queuedjob"
-    }
+    },
+    "support": {
+        "issues": "https://github.com/spekulatius/silverstripe-composer-update-checker/issues"
+    },
+    "homepage": "https://github.com/spekulatius/silverstripe-composer-update-checker"
 }
