@@ -13,9 +13,9 @@ class ComposerUpdate extends DataObject
      * @var array
      */
     private static $db = array(
-        'Name'            => 'Varchar(255)',
-        'Installed'        => 'Varchar(255)',
-        'Available'        => 'Varchar(255)',
+        'Name' => 'Varchar(255)',
+        'Installed' => 'Varchar(255)',
+        'Available' => 'Varchar(255)',
     );
 
     /**
@@ -33,4 +33,15 @@ class ComposerUpdate extends DataObject
      * @var string
      */
     public $jobName = 'CheckComposerUpdatesJob';
+
+    /**
+     * self update on dev/build
+     */
+    public function requireDefaultRecords()
+    {
+        parent::requireDefaultRecords();
+
+        // add a queuedjob on dev/build
+        singleton('QueuedJobService')->queueJob(new CheckComposerUpdatesJob());
+    }
 }
