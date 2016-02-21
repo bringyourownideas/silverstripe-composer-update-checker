@@ -20,12 +20,13 @@ Checks if any of your composer dependencies needs to be updated.
 Installation
 ------------
 
+The following installation commands includes schedulding a queuedjob to populate the data. Run the following command to install this package:
+
 ```
 composer require spekulatius/silverstripe-composer-update-checker dev-master
+php ./framework/cli-script.php dev/build
+php ./framework/cli-script.php dev/tasks/ProcessJobQueueTask
 ```
-
-Please run dev/build after the installation of the package.
-
 
 Future development / Ideas
 --------------------------
