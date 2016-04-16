@@ -1,5 +1,4 @@
-SilverStripe composer update checker
-============================
+# [SilverStripe composer update checker](https://github.com/spekulatius/silverstripe-composer-update-checker)
 
 [![Build Status](https://api.travis-ci.org/spekulatius/silverstripe-composer-update-checker.svg?branch=master)](https://travis-ci.org/spekulatius/silverstripe-composer-update-checker)
 [![Latest Stable Version](https://poser.pugx.org/spekulatius/silverstripe-composer-update-checker/version.svg)](https://github.com/spekulatius/silverstripe-composer-update-checker/releases)
