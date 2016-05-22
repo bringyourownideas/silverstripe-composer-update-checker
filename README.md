@@ -22,12 +22,9 @@ Installation
 The following installation commands includes schedulding a queuedjob to populate the data. Run the following command to install this package:
 
 ```
-composer require spekulatius/silverstripe-composer-update-checker dev-master
+composer require spekulatius/silverstripe-composer-update-checker
 php ./framework/cli-script.php dev/build
 php ./framework/cli-script.php dev/tasks/ProcessJobQueueTask
 ```
 
-Future development / Ideas
---------------------------
-
-* Output information via the dev task (plain text, JSON, XML?)
+## MISC: [Future ideas/development, issues](https://github.com/spekulatius/silverstripe-composer-update-checker/issues), [Contributing](https://github.com/spekulatius/silverstripe-composer-update-checker/blob/master/CONTRIBUTING.md), [License](https://github.com/spekulatius/silverstripe-composer-update-checker/blob/master/license.md)
