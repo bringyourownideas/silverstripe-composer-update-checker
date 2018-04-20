@@ -33,7 +33,7 @@
     "require": {
         "php": ">=5.6.0",
         "silverstripe/framework": "^3.1",
-        "silverstripe/queuedjobs": "^2.8",
+        "symbiote/silverstripe-queuedjobs": "^2.8",
         "knplabs/packagist-api": "^1.1"
     },
     "suggest": {
