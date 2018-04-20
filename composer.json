@@ -37,7 +37,7 @@
         "knplabs/packagist-api": "^1.1"
     },
     "suggest": {
-        "friendsofsilverstripe/silverstripe-maintenance": "Modeladmin for SilverStripe update checker"
+        "bringyourownideas/silverstripe-maintenance": "Modeladmin for SilverStripe update checker"
     },
     "replace": {
         "spekulatius/silverstripe-composer-update-checker": "self.version"
