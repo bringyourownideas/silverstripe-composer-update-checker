@@ -1,6 +1,6 @@
 {
-    "name": "spekulatius/silverstripe-composer-update-checker",
-    "description": "Checks if any composer packages can be updated.",
+    "name": "bringyourownideas/silverstripe-composer-update-checker",
+    "description": "Checks if any composer packages needs to be updated.",
     "keywords": [
         "composer",
         "update",
@@ -11,7 +11,7 @@
     "authors": [
         {
             "name": "Peter Thaleikis",
-            "homepage": "https://github.com/spekulatius"
+            "homepage": "https://thaleikis.de"
         },
         {
             "name": "Matt Dwen",
@@ -25,7 +25,7 @@
         },
         {
             "name": "Other contributors",
-            "homepage": "https://github.com/spekulatius/silverstripe-composer-update-checker/graphs/contributors",
+            "homepage": "https://github.com/bringyourownideas/silverstripe-composer-update-checker/graphs/contributors",
             "role": "Contributors"
         }
     ],
@@ -39,8 +39,11 @@
     "suggest": {
         "friendsofsilverstripe/silverstripe-maintenance": "Modeladmin for SilverStripe update checker"
     },
-    "support": {
-        "issues": "https://github.com/spekulatius/silverstripe-composer-update-checker/issues"
+    "replace": {
+        "spekulatius/silverstripe-composer-update-checker": "self.version"
     },
-    "homepage": "https://github.com/spekulatius/silverstripe-composer-update-checker"
+    "support": {
+        "issues": "https://github.com/bringyourownideas/silverstripe-composer-update-checker/issues"
+    },
+    "homepage": "https://github.com/bringyourownideas/silverstripe-composer-update-checker"
 }
