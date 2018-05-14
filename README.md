@@ -2,7 +2,7 @@
 
 Checks if any of your composer dependencies needs to be updated.
 
-*So far this module only runs the actual checks and saves the information into a DataObject ("ComposerUpdate") - you need to take care of processing this information somehow! If you are considering to use this the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance) might be worth a look.*
+This module only runs the actual checks and saves the information into a DataObject ("ComposerUpdate") - the display of the information is done using the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance).
 
 ### Requirements
 

@@ -34,10 +34,8 @@
         "php": ">=5.6.0",
         "silverstripe/framework": "^3.1",
         "symbiote/silverstripe-queuedjobs": "^2.8",
-        "knplabs/packagist-api": "^1.1"
-    },
-    "suggest": {
-        "bringyourownideas/silverstripe-maintenance": "Modeladmin for SilverStripe update checker"
+        "knplabs/packagist-api": "^1.1",
+        "friendsofsilverstripe/silverstripe-maintenance": "^0.3"
     },
     "replace": {
         "spekulatius/silverstripe-composer-update-checker": "self.version"
