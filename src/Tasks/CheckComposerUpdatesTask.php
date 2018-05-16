@@ -1,4 +1,8 @@
 <?php
+
+use BringYourOwnIdeas\UpdateChecker\ComposerLoader;
+use Packagist\Api\Client;
+
 /**
  * Task which does the actual checking of updates
  *
@@ -19,12 +23,10 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected $description = 'Checks if any composer dependencies can be updated.';
 
-    /**
-     * Deserialized JSON from composer.lock
-     *
-     * @var object
-     */
-    protected $composerLock;
+    private static $dependencies = [
+        'PackagistClient' => '%$Packagist\\Api\\Client',
+        'ComposerLoader' => '%$BringYourOwnIdeas\\UpdateChecker\\ComposerLoader',
+    ];
 
     /**
      * Minimum required stability defined in the site composer.json
@@ -54,11 +56,14 @@ class CheckComposerUpdatesTask extends BuildTask
     );
 
     /**
-     * Whether to write all log messages or not
-     *
-     * @var bool
+     * @var Client
      */
-    protected $extendedLogging = true;
+    protected $packagistClient;
+
+    /**
+     * @var ComposerLoader
+     */
+    protected $composerLoader;
 
     /**
      * Retrieve an array of primary composer dependencies from composer.json
@@ -67,30 +72,21 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function getPackages()
     {
-        $composerPath = BASE_PATH . '/composer.json';
-        if (!file_exists($composerPath)) {
-            return null;
-        }
-
-        // Read the contents of composer.json
-        $composerFile = file_get_contents($composerPath);
-
-        // Parse the json
-        $composerJson = json_decode($composerFile);
+        $composerJson = $this->getComposerLoader()->getJson();
 
         ini_set('display_errors', 1);
         error_reporting(E_ALL);
 
         // Set the stability parameters
-        $this->minimumStability = (isset($composerJson->{'minimum-stability'}))
-            ? $composerJson->{'minimum-stability'}
-            : 'stable';
+        $this->setMinimumStability(
+            isset($composerJson->{'minimum-stability'}) ? $composerJson->{'minimum-stability'} : 'stable'
+        );
 
-        $this->preferStable = (isset($composerJson->{'prefer-stable'}))
-            ? $composerJson->{'prefer-stable'}
-            : true;
+        $this->setPreferStable(
+            isset($composerJson->{'prefer-stable'}) ? $composerJson->{'prefer-stable'} : true
+        );
 
-        $packages = array();
+        $packages = [];
         foreach ($composerJson->require as $package => $version) {
             // Ensure there's a / in the name, probably not an addon with it
             if (!strpos($package, '/')) {
@@ -106,30 +102,16 @@ class CheckComposerUpdatesTask extends BuildTask
     /**
      * Return an array of all Composer dependencies from composer.lock
      *
-     * @return array(package => hash)
+     * Example: `['silverstripe/cms' => '3.4.1', ...]`
+     *
+     * @return array
      */
     protected function getDependencies()
     {
-        $composerPath = BASE_PATH . '/composer.lock';
-        if (!file_exists($composerPath)) {
-            return null;
-        }
-
-        // Read the contents of composer.json
-        $composerFile = file_get_contents($composerPath);
-
-        // Parse the json
-        $dependencies = json_decode($composerFile);
-
-        $packages = array();
-
-        // Loop through the requirements
-        foreach ($dependencies->packages as $package) {
+        $packages = [];
+        foreach ($this->getComposerLoader()->getLock()->packages as $package) {
             $packages[$package->name] = $package->version;
         }
-
-        $this->composerLock = $dependencies;
-
         return $packages;
     }
 
@@ -141,7 +123,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * Returns the best available version if an update is available.
      *
      * @param string $currentVersion
-     * @param string $availableVersions
+     * @param string[] $availableVersions
      * @return bool|string
      */
     protected function hasUpdate($currentVersion, $availableVersions)
@@ -168,11 +150,11 @@ class CheckComposerUpdatesTask extends BuildTask
             $versionStability = $this->getStability($version);
 
             // Does this meet minimum stability
-            if (!$this->isStableEnough($this->minimumStability, $versionStability)) {
+            if (!$this->isStableEnough($this->getMinimumStability(), $versionStability)) {
                 continue;
             }
 
-            if ($this->preferStable) {
+            if ($this->getPreferStable()) {
                 // A simple php version compare rules out the dumb stuff
                 if (version_compare($bestVersion, $version) !== -1) {
                     continue;
@@ -264,7 +246,7 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function getLocalPackage($packageName)
     {
-        foreach ($this->composerLock->packages as $package) {
+        foreach ($this->getComposerLock()->packages as $package) {
             if ($package->name == $packageName) {
                 return $package;
             }
@@ -281,7 +263,7 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function getPureVersion($version)
     {
-        $matches = array();
+        $matches = [];
 
         preg_match("/^(\d+\\.)?(\d+\\.)?(\\*|\d+)/", $version, $matches);
 
@@ -302,7 +284,7 @@ class CheckComposerUpdatesTask extends BuildTask
     {
         $version = strtolower($version);
 
-        foreach ($this->stabilityOptions as $option) {
+        foreach ($this->getStabilityOptions() as $option) {
             if (strpos($version, $option) !== false) {
                 return $option;
             }
@@ -324,7 +306,7 @@ class CheckComposerUpdatesTask extends BuildTask
     {
         $stability = strtolower($stability);
 
-        $index = array_search($stability, $this->stabilityOptions, true);
+        $index = array_search($stability, $this->getStabilityOptions(), true);
 
         if ($index === false) {
             throw new Exception("Unknown stability: $stability");
@@ -358,13 +340,13 @@ class CheckComposerUpdatesTask extends BuildTask
     protected function recordUpdate($package, $installed, $latest)
     {
         // Is there a record already for the package? If so find it.
-        $packages = ComposerUpdate::get()->filter(array('Name' => $package));
+        $packages = ComposerUpdate::get()->filter(['Name' => $package]);
 
         // if there is already one use it otherwise create a new data object
         if ($packages->count() > 0) {
             $update = $packages->first();
         } else {
-            $update = new ComposerUpdate();
+            $update = ComposerUpdate::create();
             $update->Name = $package;
         }
 
@@ -391,9 +373,6 @@ class CheckComposerUpdatesTask extends BuildTask
         $packages = $this->getPackages();
         $dependencies = $this->getDependencies();
 
-        // Load the Packagist API
-        $packagist = new Packagist\Api\Client();
-
         // run through the packages and check each for updates
         foreach ($packages as $package) {
             // verify that we need to check this package.
@@ -402,7 +381,7 @@ class CheckComposerUpdatesTask extends BuildTask
             } else {
                 // get information about this package from packagist.
                 try {
-                    $latest = $packagist->get($package);
+                    $latest = $this->getPackagistClient()->get($package);
                 } catch (Guzzle\Http\Exception\ClientErrorResponseException $e) {
                     SS_Log::log($e->getMessage(), SS_Log::WARN);
                     continue;
@@ -435,5 +414,94 @@ class CheckComposerUpdatesTask extends BuildTask
         }
 
         echo $text . PHP_EOL;
+    }
+
+    /**
+     * @param string $minimumStability
+     * @return $this
+     */
+    public function setMinimumStability($minimumStability)
+    {
+        $this->minimumStability = $minimumStability;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinimumStability()
+    {
+        return $this->minimumStability;
+    }
+
+    /**
+     * @param bool $preferStable
+     * @return $this
+     */
+    public function setPreferStable($preferStable)
+    {
+        $this->preferStable = $preferStable;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPreferStable()
+    {
+        return $this->preferStable;
+    }
+
+    /**
+     * @param array $stabilityOptions
+     * @return $this
+     */
+    public function setStabilityOptions($stabilityOptions)
+    {
+        $this->stabilityOptions = $stabilityOptions;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStabilityOptions()
+    {
+        return $this->stabilityOptions;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getPackagistClient()
+    {
+        return $this->packagistClient;
+    }
+
+    /**
+     * @param Client $packagistClient
+     */
+    public function setPackagistClient(Client $packagistClient)
+    {
+        $this->packagistClient = $packagistClient;
+        return $this;
+    }
+
+    /**
+     * @param ComposerLoader $composerLoader
+     * @return $this
+     */
+    public function setComposerLoader(ComposerLoader $composerLoader)
+    {
+        $this->composerLoader = $composerLoader;
+        return $this;
+    }
+
+    /**
+     * @return ComposerLoader
+     */
+    public function getComposerLoader()
+    {
+        return $this->composerLoader;
     }
 }
