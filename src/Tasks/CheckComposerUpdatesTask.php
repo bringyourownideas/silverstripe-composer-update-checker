@@ -1,6 +1,6 @@
 <?php
 
-use BringYourOwnIdeas\UpdateChecker\ComposerLoader;
+use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use Packagist\Api\Client;
 
 /**
@@ -25,7 +25,7 @@ class CheckComposerUpdatesTask extends BuildTask
 
     private static $dependencies = [
         'PackagistClient' => '%$Packagist\\Api\\Client',
-        'ComposerLoader' => '%$BringYourOwnIdeas\\UpdateChecker\\ComposerLoader',
+        'ComposerLoader' => '%$BringYourOwnIdeas\\Maintenance\\Util\\ComposerLoader',
     ];
 
     /**
