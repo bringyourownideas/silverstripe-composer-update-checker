@@ -24,28 +24,28 @@ class CheckComposerUpdatesTask extends BuildTask
      *
      * @var object
      */
-    private $composerLock;
+    protected $composerLock;
 
     /**
      * Minimum required stability defined in the site composer.json
      *
      * @var string
      */
-    private $minimumStability;
+    protected $minimumStability;
 
     /**
      * Whether or not to prefer stable packages
      *
      * @var bool
      */
-    private $preferStable;
+    protected $preferStable;
 
     /**
      * Known stability values
      *
      * @var array
      */
-    private $stabilityOptions = array(
+    protected $stabilityOptions = array(
         'dev',
         'alpha',
         'beta',
@@ -58,14 +58,14 @@ class CheckComposerUpdatesTask extends BuildTask
      *
      * @var bool
      */
-    private $extendedLogging = true;
+    protected $extendedLogging = true;
 
     /**
      * Retrieve an array of primary composer dependencies from composer.json
      *
      * @return array
      */
-    private function getPackages()
+    protected function getPackages()
     {
         $composerPath = BASE_PATH . '/composer.json';
         if (!file_exists($composerPath)) {
@@ -108,7 +108,7 @@ class CheckComposerUpdatesTask extends BuildTask
      *
      * @return array(package => hash)
      */
-    private function getDependencies()
+    protected function getDependencies()
     {
         $composerPath = BASE_PATH . '/composer.lock';
         if (!file_exists($composerPath)) {
@@ -144,7 +144,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @param string $availableVersions
      * @return bool|string
      */
-    private function hasUpdate($currentVersion, $availableVersions)
+    protected function hasUpdate($currentVersion, $availableVersions)
     {
         $currentVersion = strtolower($currentVersion);
 
@@ -234,7 +234,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @param $availableVersions
      * @return bool|string
      */
-    private function hasUpdateOnDevMaster($availableVersions)
+    protected function hasUpdateOnDevMaster($availableVersions)
     {
         // Get the dev-master version
         $devMaster = $availableVersions['dev-master'];
@@ -262,7 +262,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @return object
      * @throws Exception if package cannot be found in composer.lock
      */
-    private function getLocalPackage($packageName)
+    protected function getLocalPackage($packageName)
     {
         foreach ($this->composerLock->packages as $package) {
             if ($package->name == $packageName) {
@@ -279,7 +279,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @param string $version
      * @return string|null
      */
-    private function getPureVersion($version)
+    protected function getPureVersion($version)
     {
         $matches = array();
 
@@ -298,7 +298,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @param string $version
      * @return string
      */
-    private function getStability($version)
+    protected function getStability($version)
     {
         $version = strtolower($version);
 
@@ -320,7 +320,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @return int
      * @throws Exception If the stability is unknown
      */
-    private function getStabilityIndex($stability)
+    protected function getStabilityIndex($stability)
     {
         $stability = strtolower($stability);
 
@@ -340,7 +340,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @param $possibleStability
      * @return bool
      */
-    private function isStableEnough($currentStability, $possibleStability)
+    protected function isStableEnough($currentStability, $possibleStability)
     {
         $minimumIndex = $this->getStabilityIndex($currentStability);
         $possibleIndex = $this->getStabilityIndex($possibleStability);
@@ -355,7 +355,7 @@ class CheckComposerUpdatesTask extends BuildTask
      * @param string $installed Currently installed version
      * @param string|boolean $latest The latest available version
      */
-    private function recordUpdate($package, $installed, $latest)
+    protected function recordUpdate($package, $installed, $latest)
     {
         // Is there a record already for the package? If so find it.
         $packages = ComposerUpdate::get()->filter(array('Name' => $package));
@@ -430,8 +430,8 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function message($text)
     {
-        if (PHP_SAPI !== 'cli') {
-            $text = '<p>' . $text . '</p>' . PHP_EOL;
+        if (!Director::is_cli()) {
+            $text = '<p>' . $text . '</p>';
         }
 
         echo $text . PHP_EOL;
