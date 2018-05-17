@@ -43,7 +43,7 @@ class CheckComposerUpdatesJob extends AbstractQueuedJob implements QueuedJob
     public function setup()
     {
         // create the instance of the task
-        $this->task = new CheckComposerUpdatesTask();
+        $this->task = Injector::inst()->create(CheckComposerUpdatesTask::class);
     }
 
     /**
