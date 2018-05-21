@@ -1,7 +1,7 @@
 <?php
 
 use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
-use BringYourOwnIdeas\UpdateChecker\Util\UpdateChecker;
+use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
 use Composer\Package\Link;
 use Composer\Repository\ArrayRepository;
@@ -30,7 +30,7 @@ class CheckComposerUpdatesTask extends BuildTask
 
     private static $dependencies = [
         'ComposerLoader' => '%$BringYourOwnIdeas\\Maintenance\\Util\\ComposerLoader',
-        'UpdateChecker' => '%$BringYourOwnIdeas\\UpdateChecker\\Util\\UpdateChecker',
+        'UpdateChecker' => '%$BringYourOwnIdeas\\UpdateChecker\\UpdateChecker',
     ];
 
     /**

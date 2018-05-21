@@ -1,6 +1,6 @@
 <?php
 
-namespace BringYourOwnIdeas\UpdateChecker\Util;
+namespace BringYourOwnIdeas\UpdateChecker;
 
 use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use Composer\Composer;
@@ -9,7 +9,7 @@ use Composer\Package\BasePackage;
 use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionSelector;
 use Composer\Repository\CompositeRepository;
-use ComposerUpdate;
+use Package;
 use DataObject;
 use Injector;
 
@@ -27,12 +27,13 @@ class UpdateChecker
     /**
      * Update types (see {@link ComposerPackageVersion}
      *
+     * @var string
      */
-    const TYPE_RECOMMENDED = 'Recommended';
+    const TYPE_AVAILABLE = 'Available';
     const TYPE_LATEST = 'Latest';
 
     /**
-     * Checks the given package for recommended and latest updates, and writes them to data models if found
+     * Checks the given package for available and latest updates, and writes them to data models if found
      *
      * @param PackageInterface $package
      * @param string $constraint
@@ -45,13 +46,14 @@ class UpdateChecker
         $composer = Injector::inst()->create(ComposerLoader::class)->getComposer();
 
         $updateInformation = [
-            'InstalledVersion' => $installedVersion,
-            'InstalledConstraint' => $constraint,
+            'Version' => $installedVersion,
+            'VersionHash' => $package->getSourceReference(),
+            'VersionConstraint' => $constraint,
         ];
 
-        if ($recommended = $this->findLatestPackage($package, $constraint, $installedVersion, $composer, true)) {
-            $updateInformation[self::TYPE_RECOMMENDED . 'Version'] = $recommended->getPrettyVersion();
-            $updateInformation[self::TYPE_RECOMMENDED . 'Hash'] = $recommended->getSourceReference();
+        if ($available = $this->findLatestPackage($package, $constraint, $installedVersion, $composer, true)) {
+            $updateInformation[self::TYPE_AVAILABLE . 'Version'] = $available->getPrettyVersion();
+            $updateInformation[self::TYPE_AVAILABLE . 'Hash'] = $available->getSourceReference();
         }
 
         if ($latest = $this->findLatestPackage($package, $constraint, $installedVersion, $composer, false)) {
@@ -94,8 +96,12 @@ class UpdateChecker
      * @param bool $minorOnly
      * @return bool|PackageInterface
      */
-    protected function findLatestPackage(PackageInterface $package, $constraint, $installedVersion,
-        Composer $composer, $minorOnly = false
+    protected function findLatestPackage(
+        PackageInterface $package,
+        $constraint,
+        $installedVersion,
+        Composer $composer,
+        $minorOnly = false
     ) {
         // find the latest version allowed in this pool
         $name = $package->getName();
@@ -133,13 +139,13 @@ class UpdateChecker
     protected function recordUpdate($package, array $updateInformation)
     {
         // Is there a record already for the package? If so find it.
-        $packages = ComposerUpdate::get()->filter(['Name' => $package]);
+        $packages = Package::get()->filter(['Name' => $package]);
 
         // if there is already one use it otherwise create a new data object
         if ($packages->count() > 0) {
             $update = $packages->first();
         } else {
-            $update = ComposerUpdate::create();
+            $update = Package::create();
             $update->Name = $package;
         }
 
