@@ -23,8 +23,8 @@ class ComposerUpdate extends DataObject
      */
     private static $summary_fields = array(
         'Name' => 'Package',
-        'Installed',
-        'Available',
+        'Installed' => 'Installed',
+        'Available' => 'Available',
     );
 
     /**
