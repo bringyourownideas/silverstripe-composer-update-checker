@@ -21,11 +21,17 @@ class ComposerUpdateExtension extends DataExtension
 
     private static $db = [
         'VersionHash' => 'Varchar',
-        'LatestVersion' => 'Varchar',
+        'InstalledConstraint' => 'Varchar(50)',
+        'InstalledHash' => 'Varchar(50)',
+        'RecommendedVersion' => 'Varchar(50)',
+        'RecommendedHash' => 'Varchar(50)',
+        'LatestVersion' => 'Varchar(50)',
+        'LatestHash' => 'Varchar(50)',
     ];
 
     private static $summary_fields = [
-        'LatestVersion',
+        'RecommendedVersion' => 'Recommended',
+        'LatestVersion' => 'Latest',
     ];
 
     /**
