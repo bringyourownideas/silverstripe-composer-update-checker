@@ -1,5 +1,6 @@
 <?php
 
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfo;
 use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
@@ -31,18 +32,6 @@ class CheckComposerUpdatesTask extends BuildTask
     private static $dependencies = [
         'ComposerLoader' => '%$BringYourOwnIdeas\\Maintenance\\Util\\ComposerLoader',
         'UpdateChecker' => '%$BringYourOwnIdeas\\UpdateChecker\\UpdateChecker',
-    ];
-
-    /**
-     * The "types" of composer libraries that will be processed. Anything without these types will be ignored.
-     *
-     * @config
-     * @var array
-     */
-    private static $allowed_types = [
-        'silverstripe-module',
-        'silverstripe-vendormodule',
-        'silverstripe-theme',
     ];
 
     /**
@@ -140,7 +129,7 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function isAllowedType($type)
     {
-        $allowedTypes = Config::inst()->get(__CLASS__, 'allowed_types');
+        $allowedTypes = Config::inst()->get(UpdatePackageInfo::class, 'allowed_types');
 
         return in_array($type, $allowedTypes);
     }

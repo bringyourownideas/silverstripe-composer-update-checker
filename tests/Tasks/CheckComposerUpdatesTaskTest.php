@@ -2,6 +2,7 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Tests\Tasks;
 
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfo;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use CheckComposerUpdatesTask;
 use Composer\Package\PackageInterface;
@@ -34,7 +35,7 @@ class CheckComposerUpdatesTaskTest extends SapphireTest
         $this->task->setUpdateChecker($updateCheckerMock);
 
         $this->allowedTypes = ['silverstripe-module', 'silverstripe-vendormodule', 'silverstripe-theme'];
-        Config::inst()->update(CheckComposerUpdatesTask::class, 'allowed_types', $this->allowedTypes);
+        Config::inst()->update(UpdatePackageInfo::class, 'allowed_types', $this->allowedTypes);
     }
 
     public function testRunPassesPackagesToUpdateChecker()
