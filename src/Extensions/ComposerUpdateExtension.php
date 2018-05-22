@@ -2,7 +2,6 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
-use CheckComposerUpdatesJob;
 use DataExtension;
 use Injector;
 use QueuedJobService;
