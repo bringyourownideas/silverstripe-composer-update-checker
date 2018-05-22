@@ -246,7 +246,7 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function getLocalPackage($packageName)
     {
-        foreach ($this->getComposerLock()->packages as $package) {
+        foreach ($this->getComposerLoader()->getLock()->packages as $package) {
             if ($package->name == $packageName) {
                 return $package;
             }
@@ -340,25 +340,24 @@ class CheckComposerUpdatesTask extends BuildTask
     protected function recordUpdate($package, $installed, $latest)
     {
         // Is there a record already for the package? If so find it.
-        $packages = ComposerUpdate::get()->filter(['Name' => $package]);
+        $packages = Package::get()->filter(['Name' => $package]);
+
+        // Get the hash installed
+        $localPackage = $this->getLocalPackage($package);
+        $installedHash = $localPackage->source->reference;
 
         // if there is already one use it otherwise create a new data object
         if ($packages->count() > 0) {
             $update = $packages->first();
         } else {
-            $update = ComposerUpdate::create();
+            $update = Package::create();
             $update->Name = $package;
-        }
-
-        // If installed is dev-master get the hash
-        if ($installed === 'dev-master') {
-            $localPackage = $this->getLocalPackage($package);
-            $installed = $localPackage->source->reference;
+            $update->Version = $installed;
+            $update->VersionHash = $installedHash;
         }
 
         // Set the new details and save it
-        $update->Installed = $installed;
-        $update->Available = $latest;
+        $update->LatestVersion = $latest;
         $update->write();
     }
 

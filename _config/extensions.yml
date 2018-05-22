@@ -1,0 +1,6 @@
+---
+Name: updatecheckerextensions
+---
+Package:
+  extensions:
+    - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension
