@@ -5,10 +5,6 @@ Package:
   extensions:
     - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension
 
-SiteSummary:
-  extensions:
-    - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateReportExtension
-
 BringYourOwnIdeas\Maintenance\Util\ComposerLoader:
   extensions:
     - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerLoaderExtension

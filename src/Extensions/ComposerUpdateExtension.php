@@ -27,12 +27,31 @@ class ComposerUpdateExtension extends DataExtension
         'LatestHash' => 'Varchar(50)',
     ];
 
+    private static $summary_fields = [
+        'AvailableVersion' => 'Available',
+        'LatestVersion' => 'Latest',
+    ];
+
     /**
      * Automatically schedule a self update job on dev/build
      */
     public function requireDefaultRecords()
     {
         Injector::inst()->get(QueuedJobService::class)->queueJob($this->getJobName());
+    }
+
+    /**
+     * If the available version is the same as the current version then return nothing, otherwise show the latest
+     * available version
+     *
+     * @return string
+     */
+    public function getAvailableVersion()
+    {
+        if ($this->owner->getField('Version') === $this->owner->getField('AvailableVersion')) {
+            return '';
+        }
+        return $this->owner->getField('AvailableVersion');
     }
 
     /**
