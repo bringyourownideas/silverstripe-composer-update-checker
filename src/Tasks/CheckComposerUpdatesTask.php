@@ -129,7 +129,7 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function isAllowedType($type)
     {
-        $allowedTypes = Config::inst()->get(UpdatePackageInfo::class, 'allowed_types');
+        $allowedTypes = (array) Config::inst()->get(UpdatePackageInfo::class, 'allowed_types');
 
         return in_array($type, $allowedTypes);
     }

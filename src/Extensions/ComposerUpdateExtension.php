@@ -37,7 +37,8 @@ class ComposerUpdateExtension extends DataExtension
      */
     public function requireDefaultRecords()
     {
-        Injector::inst()->get(QueuedJobService::class)->queueJob($this->getJobName());
+        $job = Injector::inst()->create($this->getJobName());
+        Injector::inst()->get(QueuedJobService::class)->queueJob($job);
     }
 
     /**
