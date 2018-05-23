@@ -1,0 +1,11 @@
+Package:
+  up_to_date:
+    Name: silverstripe/package
+    Version: 1.2.0
+    AvailableVersion: 1.2.0
+    LatestVersion: 2.0.0
+  has_available_update:
+    Name: silverstripe/package2
+    Version: 1.2.0
+    AvailableVersion: 1.2.1
+    LatestVersion: 2.0.0

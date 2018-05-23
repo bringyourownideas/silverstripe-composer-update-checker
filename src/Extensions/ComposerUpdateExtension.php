@@ -2,7 +2,6 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
-use CheckComposerUpdatesJob;
 use DataExtension;
 use Injector;
 use QueuedJobService;
@@ -21,11 +20,16 @@ class ComposerUpdateExtension extends DataExtension
 
     private static $db = [
         'VersionHash' => 'Varchar',
-        'LatestVersion' => 'Varchar',
+        'VersionConstraint' => 'Varchar(50)',
+        'AvailableVersion' => 'Varchar(50)',
+        'AvailableHash' => 'Varchar(50)',
+        'LatestVersion' => 'Varchar(50)',
+        'LatestHash' => 'Varchar(50)',
     ];
 
     private static $summary_fields = [
-        'LatestVersion',
+        'AvailableVersion' => 'Available',
+        'LatestVersion' => 'Latest',
     ];
 
     /**
@@ -33,9 +37,22 @@ class ComposerUpdateExtension extends DataExtension
      */
     public function requireDefaultRecords()
     {
-        Injector::inst()
-            ->get(QueuedJobService::class)
-            ->queueJob(new CheckComposerUpdatesJob());
+        $job = Injector::inst()->create($this->getJobName());
+        Injector::inst()->get(QueuedJobService::class)->queueJob($job);
+    }
+
+    /**
+     * If the available version is the same as the current version then return nothing, otherwise show the latest
+     * available version
+     *
+     * @return string
+     */
+    public function getAvailableVersion()
+    {
+        if ($this->owner->getField('Version') === $this->owner->getField('AvailableVersion')) {
+            return '';
+        }
+        return $this->owner->getField('AvailableVersion');
     }
 
     /**

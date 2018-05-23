@@ -4,3 +4,7 @@ Name: updatecheckerextensions
 Package:
   extensions:
     - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension
+
+BringYourOwnIdeas\Maintenance\Util\ComposerLoader:
+  extensions:
+    - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerLoaderExtension
