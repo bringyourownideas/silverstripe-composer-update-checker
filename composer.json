@@ -49,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.x-dev"
+            "1.x-dev": "1.0.x-dev"
         }
     },
     "replace": {
