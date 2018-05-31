@@ -1,22 +1,21 @@
 <?php
 
-namespace BringYourOwnIdeas\UpdateChecker\Tests\Tasks;
+namespace BringYourOwnIdeas\UpdateChecker\Tests\Extensions;
 
-use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfo;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
-use CheckComposerUpdatesTask;
 use Composer\Package\PackageInterface;
 use Config;
 use PHPUnit_Framework_TestCase;
 use SapphireTest;
+use UpdatePackageInfoTask;
 
 /**
  * @mixin PHPUnit_Framework_TestCase
  */
-class CheckComposerUpdatesTaskTest extends SapphireTest
+class CheckComposerUpdatesExtensionTest extends SapphireTest
 {
     /**
-     * @var CheckComposerUpdatesTask
+     * @var UpdatePackageInfoTask
      */
     protected $task;
 
@@ -29,7 +28,7 @@ class CheckComposerUpdatesTaskTest extends SapphireTest
     {
         parent::setUp();
 
-        $this->task = CheckComposerUpdatesTask::create();
+        $this->task = UpdatePackageInfoTask::create();
 
         $updateCheckerMock = $this->getMockBuilder(UpdateChecker::class)->setMethods(['checkForUpdates'])->getMock();
         $this->task->setUpdateChecker($updateCheckerMock);

@@ -61,7 +61,8 @@ class UpdateChecker
             $updateInformation[self::TYPE_LATEST . 'Hash'] = $latest->getSourceReference();
         }
 
-        $this->recordUpdate($package->getName(), $updateInformation);
+        return $updateInformation;
+       // $this->recordUpdate($package->getName(), $updateInformation);
     }
 
     /**
