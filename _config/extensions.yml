@@ -8,3 +8,7 @@ Package:
 BringYourOwnIdeas\Maintenance\Util\ComposerLoader:
   extensions:
     - BringYourOwnIdeas\UpdateChecker\Extensions\ComposerLoaderExtension
+
+UpdatePackageInfoTask:
+  extensions:
+    - BringYourOwnIdeas\UpdateChecker\Extensions\CheckComposerUpdatesExtension
