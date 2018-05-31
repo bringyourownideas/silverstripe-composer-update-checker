@@ -37,13 +37,14 @@ class UpdateChecker
      *
      * @param PackageInterface $package
      * @param string $constraint
+     * @return string[]
      */
     public function checkForUpdates(PackageInterface $package, $constraint)
     {
         $installedVersion = $package->getPrettyVersion();
 
         /** @var Composer $composer */
-        $composer = Injector::inst()->create(ComposerLoader::class)->getComposer();
+        $composer = Injector::inst()->get(ComposerLoader::class)->getComposer();
 
         $updateInformation = [
             'Version' => $installedVersion,
@@ -62,7 +63,6 @@ class UpdateChecker
         }
 
         return $updateInformation;
-       // $this->recordUpdate($package->getName(), $updateInformation);
     }
 
     /**
@@ -129,28 +129,5 @@ class UpdateChecker
         }
 
         return $versionSelector->findBestCandidate($name, $targetVersion, null, $bestStability);
-    }
-
-    /**
-     * Record package details in the database
-     *
-     * @param string $package Name of the Composer Package
-     * @param array $updateInformation Data to write to the model
-     */
-    protected function recordUpdate($package, array $updateInformation)
-    {
-        // Is there a record already for the package? If so find it.
-        $packages = Package::get()->filter(['Name' => $package]);
-
-        // if there is already one use it otherwise create a new data object
-        if ($packages->count() > 0) {
-            $update = $packages->first();
-        } else {
-            $update = Package::create();
-            $update->Name = $package;
-        }
-
-        /** @var DataObject $update */
-        $update->update($updateInformation)->write();
     }
 }

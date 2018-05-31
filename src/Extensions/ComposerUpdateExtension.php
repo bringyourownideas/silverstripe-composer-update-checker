@@ -3,8 +3,6 @@
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
 use DataExtension;
-use Injector;
-use QueuedJobService;
 
 /**
  * Describes any available updates to an installed Composer package
@@ -13,11 +11,6 @@ use QueuedJobService;
  */
 class ComposerUpdateExtension extends DataExtension
 {
-    /**
-     * @var string
-     */
-    protected $jobName = 'CheckComposerUpdatesJob';
-
     private static $db = [
         'VersionHash' => 'Varchar',
         'VersionConstraint' => 'Varchar(50)',
@@ -33,15 +26,6 @@ class ComposerUpdateExtension extends DataExtension
     ];
 
     /**
-     * Automatically schedule a self update job on dev/build
-     */
-    public function requireDefaultRecords()
-    {
-        $job = Injector::inst()->create($this->getJobName());
-        Injector::inst()->get(QueuedJobService::class)->queueJob($job);
-    }
-
-    /**
      * If the available version is the same as the current version then return nothing, otherwise show the latest
      * available version
      *
@@ -53,15 +37,5 @@ class ComposerUpdateExtension extends DataExtension
             return '';
         }
         return $this->owner->getField('AvailableVersion');
-    }
-
-    /**
-     * Return the name of the related job
-     *
-     * @return string
-     */
-    public function getJobName()
-    {
-        return $this->jobName;
     }
 }

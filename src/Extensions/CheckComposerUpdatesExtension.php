@@ -39,6 +39,10 @@ class CheckComposerUpdatesExtension extends Extension
 
         // Loop list of packages given by owner task
         foreach ($installedPackageList as &$installedPackage) {
+            /** @var array $installedPackage */
+            if (empty($installedPackage['Name'])) {
+                continue;
+            }
             $packageName = $installedPackage['Name'];
 
             // Continue if we have no composer constraint details
@@ -49,10 +53,8 @@ class CheckComposerUpdatesExtension extends Extension
 
             // Check for a relevant update version to recommend returned as keyed array and add to existing package
             // details array
-            $installedPackage += $this->getUpdateChecker()->checkForUpdates(
-                $packageData['package'],
-                $packageData['constraint']
-            );
+            $updates = $this->getUpdateChecker()->checkForUpdates($packageData['package'], $packageData['constraint']);
+            $installedPackage = array_merge($installedPackage, $updates);
         }
     }
 
