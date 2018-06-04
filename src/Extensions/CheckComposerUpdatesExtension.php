@@ -3,9 +3,9 @@
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
-use Config;
-use Extension;
-use UpdatePackageInfoTask;
+use SilverStripe\Core\Config\Config;
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
+use SilverStripe\Core\Extension;
 
 /**
  * Task which does the actual checking of updates

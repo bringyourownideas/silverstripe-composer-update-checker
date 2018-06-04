@@ -2,18 +2,13 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Tests\Extensions;
 
-use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use BringYourOwnIdeas\UpdateChecker\Extensions\CheckComposerUpdatesExtension;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
-use Composer\Composer;
 use Composer\Package\PackageInterface;
-use Composer\Package\RootPackage;
-use Config;
-use Injector;
-use Package;
 use PHPUnit_Framework_TestCase;
-use SapphireTest;
-use UpdatePackageInfoTask;
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\SapphireTest;
 
 /**
  * @mixin PHPUnit_Framework_TestCase

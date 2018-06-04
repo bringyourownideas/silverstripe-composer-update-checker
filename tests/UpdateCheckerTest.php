@@ -5,9 +5,9 @@ namespace BringYourOwnIdeas\UpdateChecker\Tests;
 use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
-use Injector;
 use PHPUnit_Framework_TestCase;
-use SapphireTest;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Dev\SapphireTest;
 
 /**
  * @mixin PHPUnit_Framework_TestCase
@@ -23,7 +23,7 @@ class UpdateCheckerTest extends SapphireTest
         parent::setUp();
 
         // Mock composer and composer loader
-        $composer = $this->getMock(Composer::Class);
+        $composer = $this->getMockBuilder(Composer::Class)->getMock();
         $composerLoader = $this->getMockBuilder(ComposerLoader::class)
             ->setMethods(['getComposer'])
             ->getMock();

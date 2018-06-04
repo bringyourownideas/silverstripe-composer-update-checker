@@ -9,7 +9,7 @@ use Composer\Package\Link;
 use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
 use Composer\Repository\CompositeRepository;
-use Extension;
+use SilverStripe\Core\Extension;
 
 class ComposerLoaderExtension extends Extension
 {

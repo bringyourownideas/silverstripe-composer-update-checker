@@ -6,7 +6,7 @@
         "update",
         "check"
     ],
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "license": "MIT",
     "authors": [
         {
