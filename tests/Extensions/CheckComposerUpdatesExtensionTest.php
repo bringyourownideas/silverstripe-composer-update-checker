@@ -1,22 +1,29 @@
 <?php
 
-namespace BringYourOwnIdeas\UpdateChecker\Tests\Tasks;
+namespace BringYourOwnIdeas\UpdateChecker\Tests\Extensions;
 
-use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfo;
+use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
+use BringYourOwnIdeas\UpdateChecker\Extensions\CheckComposerUpdatesExtension;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
-use CheckComposerUpdatesTask;
+use Composer\Composer;
 use Composer\Package\PackageInterface;
+use Composer\Package\RootPackage;
 use Config;
+use Injector;
+use Package;
 use PHPUnit_Framework_TestCase;
 use SapphireTest;
+use UpdatePackageInfoTask;
 
 /**
  * @mixin PHPUnit_Framework_TestCase
  */
-class CheckComposerUpdatesTaskTest extends SapphireTest
+class CheckComposerUpdatesExtensionTest extends SapphireTest
 {
+    protected $usesDatabase = true;
+
     /**
-     * @var CheckComposerUpdatesTask
+     * @var UpdatePackageInfoTask|CheckComposerUpdatesExtension
      */
     protected $task;
 
@@ -29,23 +36,24 @@ class CheckComposerUpdatesTaskTest extends SapphireTest
     {
         parent::setUp();
 
-        $this->task = CheckComposerUpdatesTask::create();
+        $this->task = UpdatePackageInfoTask::create();
 
+        // Create a partial mock of the update checker
         $updateCheckerMock = $this->getMockBuilder(UpdateChecker::class)->setMethods(['checkForUpdates'])->getMock();
         $this->task->setUpdateChecker($updateCheckerMock);
 
         $this->allowedTypes = ['silverstripe-module', 'silverstripe-vendormodule', 'silverstripe-theme'];
-        Config::inst()->update(UpdatePackageInfo::class, 'allowed_types', $this->allowedTypes);
+        Config::inst()->update(UpdatePackageInfoTask::class, 'allowed_types', $this->allowedTypes);
     }
 
     public function testRunPassesPackagesToUpdateChecker()
     {
         $this->task->getUpdateChecker()->expects($this->atLeastOnce())
             ->method('checkForUpdates')
-            ->with($this->isInstanceOf(PackageInterface::class), $this->isType('string'));
+            ->with($this->isInstanceOf(PackageInterface::class), $this->isType('string'))
+            ->will($this->returnValue([]));
 
-        $output = $this->runTask();
-        $this->assertContains('The task finished running', $output);
+        $this->runTask();
     }
 
     public function testOnlyAllowedPackageTypesAreProcessed()
@@ -54,7 +62,8 @@ class CheckComposerUpdatesTaskTest extends SapphireTest
             ->method('checkForUpdates')
             ->with($this->callback(function ($argument) {
                 return in_array($argument->getType(), $this->allowedTypes);
-            }));
+            }))
+            ->will($this->returnValue([]));
 
         $this->runTask();
     }

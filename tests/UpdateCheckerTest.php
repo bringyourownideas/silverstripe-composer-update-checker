@@ -2,11 +2,10 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Tests;
 
+use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
-use Composer\Package\RootPackage;
 use Injector;
-use Package;
 use PHPUnit_Framework_TestCase;
 use SapphireTest;
 
@@ -17,48 +16,46 @@ class UpdateCheckerTest extends SapphireTest
 {
     protected $usesDatabase = true;
 
-    public function testAvailableUpdatesAreWrittenToPackageModel()
+    protected $updateChecker;
+
+    public function setUp()
     {
-        // Mock Composer
-        $composerMock = $this->getMock(Composer::class);
-        Injector::inst()->registerService($composerMock, Composer::class);
+        parent::setUp();
 
-        // Create mock package
-        $packageMock = $this->getMockBuilder(RootPackage::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getName', 'getPrettyVersion', 'getSourceReference'])
+        // Mock composer and composer loader
+        $composer = $this->getMock(Composer::Class);
+        $composerLoader = $this->getMockBuilder(ComposerLoader::class)
+            ->setMethods(['getComposer'])
             ->getMock();
-        $packageMock->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('foo/module'));
-        $packageMock->expects($this->exactly(3))
-            ->method('getPrettyVersion')
-            ->will($this->onConsecutiveCalls('1.2.0', '1.2.3', '2.3.4'));
-        $packageMock->expects($this->exactly(3))
-            ->method('getSourceReference')
-            ->will($this->onConsecutiveCalls('1a2s3d4f', '8s7d6f5g', '9g8f7d6s'));
+        $composerLoader->expects($this->once())->method('getComposer')->will($this->returnValue($composer));
+        Injector::inst()->registerService($composerLoader, ComposerLoader::class);
 
-        // Partially mock the update checker
-        $checker = $this->getMockBuilder(UpdateChecker::class)->setMethods(['findLatestPackage'])->getMock();
-        $checker->expects($this->exactly(2))
+        // Partially mock UpdateChecker
+        $this->updateChecker = $this->getMockBuilder(UpdateChecker::class)
+            ->setMethods(['findLatestPackage'])
+            ->getMock();
+    }
+
+    public function testCheckForUpdates()
+    {
+        $mockPackage = new \Composer\Package\Package('foo/bar', '2.3.4.0', '2.3.4');
+        $mockPackage->setSourceReference('foobar123');
+
+        // No available update
+        $this->updateChecker->expects($this->at(0))
             ->method('findLatestPackage')
-            ->will($this->returnValue($packageMock));
+            ->will($this->returnValue(false));
 
-        // Run the checker
-        $checker->checkForUpdates($packageMock, '~1.2');
+        // There is latest version though
+        $this->updateChecker->expects($this->at(1))
+            ->method('findLatestPackage')
+            ->will($this->returnValue($mockPackage));
 
-        // Check the database for results
-        $module = Package::get()->filter(['Name' => 'foo/module'])->first();
-        $this->assertNotEmpty($module);
 
-        $this->assertSame('1a2s3d4f', $module->VersionHash, 'The current hash is recorded');
-        $this->assertSame('8s7d6f5g', $module->AvailableHash, 'The next available hash is recorded');
-        $this->assertSame('9g8f7d6s', $module->LatestHash, 'The latest available hash is recorded');
-
-        $this->assertSame('1.2.0', $module->Version, 'The current version is recorded');
-        $this->assertSame('1.2.3', $module->AvailableVersion, 'The available version is recorded');
-        $this->assertSame('2.3.4', $module->LatestVersion, 'The latest available version is recorded');
-
-        $this->assertSame('~1.2', $module->VersionConstraint, 'The installation constraint is recorded');
+        $result = $this->updateChecker->checkForUpdates($mockPackage, '~1.2.0');
+        $this->assertArrayNotHasKey('AvailableVersion', $result, 'No available update is recorded');
+        $this->assertArrayNotHasKey('AvailableHash', $result, 'No available update is recorded');
+        $this->assertSame('2.3.4', $result['LatestVersion'], 'Latest version is returned');
+        $this->assertSame('foobar123', $result['LatestHash'], 'Hash of latest version is returned');
     }
 }
