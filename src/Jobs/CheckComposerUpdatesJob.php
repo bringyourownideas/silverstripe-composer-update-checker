@@ -1,4 +1,14 @@
 <?php
+
+namespace BringYourOwnIdeas\UpdateChecker\Jobs;
+
+use SilverStripe\Dev\BuildTask;
+use Symbiote\QueuedJobs\Services\QueuedJob;
+use SilverStripe\Core\Injector\Injector;
+use BringYourOwnIdeas\UpdateChecker\Tasks\CheckComposerUpdatesTask;
+use SilverStripe\Control\HTTPRequest;
+use Symbiote\QueuedJobs\Services\AbstractQueuedJob;
+
 /**
  * Composer update checker job. Runs the check as a queuedjob.
  *
@@ -52,7 +62,7 @@ class CheckComposerUpdatesJob extends AbstractQueuedJob implements QueuedJob
     public function process()
     {
         // run the task
-        $this->task->run(new SS_HTTPRequest('GET', '/'));
+        $this->task->run(new HTTPRequest('GET', '/'));
 
         // mark job as completed
         $this->isComplete = true;

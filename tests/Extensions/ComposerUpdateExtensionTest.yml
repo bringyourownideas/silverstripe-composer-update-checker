@@ -1,4 +1,4 @@
-Package:
+BringYourOwnIdeas\Maintenance\Model\Package:
   up_to_date:
     Name: silverstripe/package
     Version: 1.2.0

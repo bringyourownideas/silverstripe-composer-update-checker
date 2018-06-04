@@ -9,9 +9,9 @@ use Composer\Package\BasePackage;
 use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionSelector;
 use Composer\Repository\CompositeRepository;
-use Package;
-use DataObject;
-use Injector;
+use SilverStripe\Core\Injector\Injector;
+use BringYourOwnIdeas\Maintenance\Model\Package;
+use SilverStripe\ORM\DataObject;
 
 /**
  * The update checker class is provided a {@link Link} object representing a package and uses the Composer API to

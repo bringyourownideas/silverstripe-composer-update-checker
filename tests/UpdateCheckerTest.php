@@ -5,10 +5,10 @@ namespace BringYourOwnIdeas\UpdateChecker\Tests;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
 use Composer\Package\RootPackage;
-use Injector;
-use Package;
 use PHPUnit_Framework_TestCase;
-use SapphireTest;
+use SilverStripe\Core\Injector\Injector;
+use BringYourOwnIdeas\Maintenance\Model\Package;
+use SilverStripe\Dev\SapphireTest;
 
 /**
  * @mixin PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class UpdateCheckerTest extends SapphireTest
     public function testAvailableUpdatesAreWrittenToPackageModel()
     {
         // Mock Composer
-        $composerMock = $this->getMock(Composer::class);
+        $composerMock = $this->getMockBuilder(Composer::class)->getMock();
         Injector::inst()->registerService($composerMock, Composer::class);
 
         // Create mock package

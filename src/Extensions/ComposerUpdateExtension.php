@@ -2,9 +2,10 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
-use DataExtension;
-use Injector;
-use QueuedJobService;
+use BringYourOwnIdeas\UpdateChecker\Jobs\CheckComposerUpdatesJob;
+use SilverStripe\Core\Injector\Injector;
+use Symbiote\QueuedJobs\Services\QueuedJobService;
+use SilverStripe\ORM\DataExtension;
 
 /**
  * Describes any available updates to an installed Composer package
@@ -16,7 +17,7 @@ class ComposerUpdateExtension extends DataExtension
     /**
      * @var string
      */
-    protected $jobName = 'CheckComposerUpdatesJob';
+    protected $jobName = CheckComposerUpdatesJob::class;
 
     private static $db = [
         'VersionHash' => 'Varchar',

@@ -3,9 +3,11 @@
 namespace BringYourOwnIdeas\UpdateChecker\Tests\Extensions;
 
 use BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension;
-use Package;
+
 use PHPUnit_Framework_TestCase;
-use SapphireTest;
+
+use BringYourOwnIdeas\Maintenance\Model\Package;
+use SilverStripe\Dev\SapphireTest;
 
 /**
  * @mixin PHPUnit_Framework_TestCase
@@ -14,7 +16,7 @@ class ComposerUpdateExtensionTest extends SapphireTest
 {
     protected static $fixture_file = 'ComposerUpdateExtensionTest.yml';
 
-    protected $requiredExtensions = [
+    protected static $required_extensions = [
         Package::class => [
             ComposerUpdateExtension::class,
         ],

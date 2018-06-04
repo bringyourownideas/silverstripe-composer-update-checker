@@ -1,6 +1,8 @@
 <?php
 
-use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfo;
+namespace BringYourOwnIdeas\UpdateChecker\Tasks;
+
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
 use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
@@ -8,6 +10,10 @@ use Composer\Package\Link;
 use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
 use Composer\Repository\CompositeRepository;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\Director;
+use SilverStripe\Dev\BuildTask;
 
 /**
  * Task which does the actual checking of updates
@@ -29,6 +35,8 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected $description = 'Checks if any composer dependencies can be updated.';
 
+    private static $segment = "CheckComposerUpdates";
+
     private static $dependencies = [
         'ComposerLoader' => '%$BringYourOwnIdeas\\Maintenance\\Util\\ComposerLoader',
         'UpdateChecker' => '%$BringYourOwnIdeas\\UpdateChecker\\UpdateChecker',
@@ -47,7 +55,7 @@ class CheckComposerUpdatesTask extends BuildTask
     /**
      * Runs the actual steps to verify if there are updates available
      *
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      */
     public function run($request)
     {
@@ -129,7 +137,7 @@ class CheckComposerUpdatesTask extends BuildTask
      */
     protected function isAllowedType($type)
     {
-        $allowedTypes = (array) Config::inst()->get(UpdatePackageInfo::class, 'allowed_types');
+        $allowedTypes = (array) Config::inst()->get(UpdatePackageInfoTask::class, 'allowed_types');
 
         return in_array($type, $allowedTypes);
     }

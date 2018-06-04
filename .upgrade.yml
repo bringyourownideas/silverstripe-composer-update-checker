@@ -1,0 +1,3 @@
+mappings:
+  CheckComposerUpdatesTask: BringYourOwnIdeas\UpdateChecker\Tasks\CheckComposerUpdatesTask
+  CheckComposerUpdatesJob: BringYourOwnIdeas\UpdateChecker\Jobs\CheckComposerUpdatesJob

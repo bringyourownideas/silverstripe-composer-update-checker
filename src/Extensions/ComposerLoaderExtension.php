@@ -5,7 +5,7 @@ namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
-use Extension;
+use SilverStripe\Core\Extension;
 
 class ComposerLoaderExtension extends Extension
 {
