@@ -14,7 +14,7 @@ class ComposerUpdateExtensionTest extends SapphireTest
 {
     protected static $fixture_file = 'ComposerUpdateExtensionTest.yml';
 
-    protected $requiredExtensions = [
+    protected static $required_extensions = [
         Package::class => [
             ComposerUpdateExtension::class,
         ],

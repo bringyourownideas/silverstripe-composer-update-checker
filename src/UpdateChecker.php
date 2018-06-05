@@ -9,9 +9,6 @@ use Composer\Package\BasePackage;
 use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionSelector;
 use Composer\Repository\CompositeRepository;
-
-
-
 use SilverStripe\Core\Injector\Injector;
 
 /**
