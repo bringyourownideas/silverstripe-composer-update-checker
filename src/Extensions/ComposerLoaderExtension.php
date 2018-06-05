@@ -9,7 +9,8 @@ use Composer\Package\Link;
 use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
 use Composer\Repository\CompositeRepository;
-use Extension;
+use Composer\Repository\RepositoryInterface;
+use SilverStripe\Core\Extension;
 
 class ComposerLoaderExtension extends Extension
 {
@@ -47,16 +48,8 @@ class ComposerLoaderExtension extends Extension
      */
     public function getPackages(array $allowedTypes = null)
     {
-        /** @var Composer $composer */
-        $composer = $this->getComposer();
-
-        /** @var BaseRepository $repository */
-        $repository = new CompositeRepository([
-            new ArrayRepository([$composer->getPackage()]),
-            $composer->getRepositoryManager()->getLocalRepository(),
-        ]);
-
         $packages = [];
+        $repository = $this->getRepository();
         foreach ($repository->getPackages() as $package) {
             // Filter out packages that are not "allowed types"
             if (is_array($allowedTypes) && !in_array($package->getType(), $allowedTypes)) {
@@ -71,6 +64,23 @@ class ComposerLoaderExtension extends Extension
             ];
         }
         return $packages;
+    }
+
+    /**
+     * Provides access to the Composer repository
+     *
+     * @return RepositoryInterface
+     */
+    protected function getRepository()
+    {
+        /** @var Composer $composer */
+        $composer = $this->getComposer();
+
+        /** @var BaseRepository $repository */
+        return new CompositeRepository([
+            new ArrayRepository([$composer->getPackage()]),
+            $composer->getRepositoryManager()->getLocalRepository(),
+        ]);
     }
 
     /**

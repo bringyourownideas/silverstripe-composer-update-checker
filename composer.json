@@ -6,7 +6,7 @@
         "update",
         "check"
     ],
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "license": "MIT",
     "authors": [
         {
@@ -30,6 +30,7 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "composer/composer": "^1",
         "silverstripe/framework": "^4",

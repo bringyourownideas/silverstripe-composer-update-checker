@@ -2,7 +2,7 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
-use DataExtension;
+use SilverStripe\ORM\DataExtension;
 
 /**
  * Describes any available updates to an installed Composer package
