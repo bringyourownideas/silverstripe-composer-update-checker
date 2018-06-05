@@ -2,9 +2,9 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use SilverStripe\Core\Config\Config;
-use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
 use SilverStripe\Core\Extension;
 
 /**

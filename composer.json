@@ -30,6 +30,7 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "composer/composer": "^1",
         "silverstripe/framework": "^4",

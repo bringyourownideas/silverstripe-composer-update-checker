@@ -2,12 +2,15 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Tests\Extensions;
 
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
 use BringYourOwnIdeas\UpdateChecker\Extensions\CheckComposerUpdatesExtension;
+use BringYourOwnIdeas\UpdateChecker\Extensions\ComposerLoaderExtension;
+use BringYourOwnIdeas\UpdateChecker\Tests\Stubs\ComposerLoaderExtensionStub;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Package\PackageInterface;
 use PHPUnit_Framework_TestCase;
-use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\SapphireTest;
 
 /**
@@ -31,6 +34,12 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
     {
         parent::setUp();
 
+        // Register the extension stub for unit testing to avoid loading Composer
+        Config::modify()->merge(Injector::class, ComposerLoaderExtension::class, [
+            'class' => ComposerLoaderExtensionStub::class,
+        ]);
+
+        // Create the task for testing
         $this->task = UpdatePackageInfoTask::create();
 
         // Create a partial mock of the update checker
@@ -38,7 +47,7 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
         $this->task->setUpdateChecker($updateCheckerMock);
 
         $this->allowedTypes = ['silverstripe-module', 'silverstripe-vendormodule', 'silverstripe-theme'];
-        Config::inst()->update(UpdatePackageInfoTask::class, 'allowed_types', $this->allowedTypes);
+        Config::modify()->set(UpdatePackageInfoTask::class, 'allowed_types', $this->allowedTypes);
     }
 
     public function testRunPassesPackagesToUpdateChecker()

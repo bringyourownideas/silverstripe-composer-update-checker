@@ -16,15 +16,19 @@ class UpdateCheckerTest extends SapphireTest
 {
     protected $usesDatabase = true;
 
+    /**
+     * @var UpdateChecker
+     */
     protected $updateChecker;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
         // Mock composer and composer loader
         $composer = $this->getMockBuilder(Composer::Class)->getMock();
         $composerLoader = $this->getMockBuilder(ComposerLoader::class)
+            ->disableOriginalConstructor()
             ->setMethods(['getComposer'])
             ->getMock();
         $composerLoader->expects($this->once())->method('getComposer')->will($this->returnValue($composer));

@@ -2,9 +2,9 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Tests\Extensions;
 
+use BringYourOwnIdeas\Maintenance\Model\Package;
 use BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension;
 use PHPUnit_Framework_TestCase;
-use BringYourOwnIdeas\Maintenance\Model\Package;
 use SilverStripe\Dev\SapphireTest;
 
 /**
