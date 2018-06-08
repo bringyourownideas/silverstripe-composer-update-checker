@@ -20,9 +20,9 @@ the command line to install or update PHP packages.
 
 ### Requirements
 
-* bringyourownideas/silverstripe-maintenance ^1
+* bringyourownideas/silverstripe-maintenance ^2
 * composer/composer ^1
-* silverstripe/framework ^3.2
+* silverstripe/framework ^4
 
 #### Compatibility
 
@@ -35,8 +35,9 @@ Run the following command to install this package:
 
 ```
 composer require bringyourownideas/silverstripe-composer-update-checker ^1
-php ./framework/cli-script.php dev/build flush=1
-php ./framework/cli-script.php dev/tasks/UpdatePackageInfoTask
+
+vendor/bin/sake dev/build flush=1
+vendor/bin/sake dev/tasks/UpdatePackageInfoTask
 ```
 
 ### Terminology
