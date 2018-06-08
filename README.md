@@ -38,6 +38,9 @@ composer require bringyourownideas/silverstripe-composer-update-checker ^1
 php ./framework/cli-script.php dev/build flush=1
 php ./framework/cli-script.php dev/tasks/UpdatePackageInfoTask
 ```
+## Documentation
+
+Please see the user guide section of the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/1/docs/en/userguide).
 
 ### Terminology
 
