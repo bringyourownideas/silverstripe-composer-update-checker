@@ -41,7 +41,7 @@ vendor/bin/sake dev/tasks/UpdatePackageInfoTask
 ```
 ## Documentation
 
-Please see the user guide section of the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/1/docs/en/userguide).
+Please see the user guide section of the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/master/docs/en/userguide).
 
 ### Terminology
 
