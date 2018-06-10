@@ -39,6 +39,9 @@ composer require bringyourownideas/silverstripe-composer-update-checker ^1
 vendor/bin/sake dev/build flush=1
 vendor/bin/sake dev/tasks/UpdatePackageInfoTask
 ```
+## Documentation
+
+Please see the user guide section of the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/1/docs/en/userguide).
 
 ### Terminology
 
