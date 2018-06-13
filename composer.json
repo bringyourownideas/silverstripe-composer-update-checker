@@ -34,7 +34,7 @@
     "require": {
         "composer/composer": "^1",
         "silverstripe/framework": "^4",
-        "bringyourownideas/silverstripe-maintenance": "^2@dev"
+        "bringyourownideas/silverstripe-maintenance": "^2"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7",
@@ -46,11 +46,7 @@
             "BringYourOwnIdeas\\UpdateChecker\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.x-dev"
-        }
-    },
+    "extra": [],
     "replace": {
         "spekulatius/silverstripe-composer-update-checker": "self.version"
     },
