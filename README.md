@@ -3,6 +3,7 @@
 [![Build Status](https://api.travis-ci.org/bringyourownideas/silverstripe-composer-update-checker.svg?branch=master)](https://travis-ci.org/bringyourownideas/silverstripe-composer-update-checker)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/bringyourownideas/silverstripe-composer-update-checker.svg)](https://scrutinizer-ci.com/g/bringyourownideas/silverstripe-composer-update-checker?branch=master)
 [![codecov](https://codecov.io/gh/bringyourownideas/silverstripe-composer-update-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/bringyourownideas/silverstripe-composer-update-checker)
+[![SilverStripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
 [![Latest Stable Version](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/version.svg)](https://github.com/bringyourownideas/silverstripe-composer-update-checker/releases)
 [![Latest Unstable Version](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/v/unstable.svg)](https://packagist.org/packages/bringyourownideas/silverstripe-composer-update-checker)
 [![Total Downloads](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/downloads.svg)](https://packagist.org/packages/bringyourownideas/silverstripe-composer-update-checker)
