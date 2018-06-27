@@ -10,6 +10,7 @@ use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
 use Composer\Repository\CompositeRepository;
 use Composer\Repository\RepositoryInterface;
+use SilverStripe\Core\Environment;
 use SilverStripe\Core\Extension;
 
 class ComposerLoaderExtension extends Extension
@@ -110,7 +111,7 @@ class ComposerLoaderExtension extends Extension
     public function onAfterBuild()
     {
         // Mock COMPOSER_HOME if it's not defined already. Composer requires one of the two to be set.
-        if (!getenv('HOME') && !getenv('COMPOSER_HOME')) {
+        if (!Environment::getEnv('HOME') && !Environment::getEnv('COMPOSER_HOME')) {
             putenv('COMPOSER_HOME=/tmp');
         }
 
