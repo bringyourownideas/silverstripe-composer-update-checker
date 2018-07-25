@@ -39,6 +39,19 @@ composer require bringyourownideas/silverstripe-composer-update-checker ^1
 vendor/bin/sake dev/build flush=1
 vendor/bin/sake dev/tasks/UpdatePackageInfoTask
 ```
+
+## Note for private repositories
+
+Please note that if your project has modules that are stored in private repositories, the server running the BuildTask
+will need to have the necessary permissions to access the private VCS repositories in order for the report to include
+update information about necessary updates to the module.
+
+If the process looking for available updates fails (for example, due to an authentication failure against a private
+repository) the process will fail gracefully and allow the rest of the report generation to continue.
+
+Users on the [Common Web Platform](https://cwp.govt.nz) will currently not be able to retrieve information about
+updates to private repositories.
+
 ## Documentation
 
 Please see the user guide section of the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/master/docs/en/userguide).

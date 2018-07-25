@@ -4,8 +4,11 @@ namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
 use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Extension;
+use SilverStripe\Core\Injector\Injector;
 
 /**
  * Task which does the actual checking of updates
@@ -51,9 +54,18 @@ class CheckComposerUpdatesExtension extends Extension
             }
             $packageData = $composerPackagesAndConstraints[$packageName];
 
-            // Check for a relevant update version to recommend returned as keyed array and add to existing package
-            // details array
-            $updates = $this->getUpdateChecker()->checkForUpdates($packageData['package'], $packageData['constraint']);
+            try {
+                // Check for a relevant update version to recommend returned as keyed array and add to existing package
+                // details array
+                $updates = $this->getUpdateChecker()
+                    ->checkForUpdates($packageData['package'], $packageData['constraint']);
+            } catch (RuntimeException $ex) {
+                // If exceptions are thrown during execution, fail gracefully and allow the rest of the report
+                // generation to continue
+                $updates = [];
+                Injector::inst()->get(LoggerInterface::class)->debug($ex->getMessage());
+            }
+
             $installedPackage = array_merge($installedPackage, $updates);
         }
     }
