@@ -5,6 +5,8 @@ namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Config;
 use Extension;
+use RuntimeException;
+use SS_Log;
 use UpdatePackageInfoTask;
 
 /**
@@ -51,9 +53,18 @@ class CheckComposerUpdatesExtension extends Extension
             }
             $packageData = $composerPackagesAndConstraints[$packageName];
 
-            // Check for a relevant update version to recommend returned as keyed array and add to existing package
-            // details array
-            $updates = $this->getUpdateChecker()->checkForUpdates($packageData['package'], $packageData['constraint']);
+            try {
+                // Check for a relevant update version to recommend returned as keyed array and add to existing package
+                // details array
+                $updates = $this->getUpdateChecker()
+                    ->checkForUpdates($packageData['package'], $packageData['constraint']);
+            } catch (RuntimeException $ex) {
+                // If exceptions are thrown during execution, fail gracefully and allow the rest of the report
+                // generation to continue
+                $updates = [];
+                SS_Log::log($ex->getMessage(), SS_Log::WARN);
+            }
+
             $installedPackage = array_merge($installedPackage, $updates);
         }
     }
