@@ -35,7 +35,7 @@ SilverStripe ^4.0.
 Run the following command to install this package:
 
 ```
-composer require bringyourownideas/silverstripe-composer-update-checker ^1
+composer require bringyourownideas/silverstripe-composer-update-checker ^2
 
 vendor/bin/sake dev/build flush=1
 vendor/bin/sake dev/tasks/UpdatePackageInfoTask
