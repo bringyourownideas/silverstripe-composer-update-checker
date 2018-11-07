@@ -100,8 +100,12 @@ class ComposerLoaderExtension extends Extension
     public function onAfterBuild()
     {
         // Mock COMPOSER_HOME if it's not defined already. Composer requires one of the two to be set.
-        if (!getenv('HOME') && !getenv('COMPOSER_HOME')) {
-            putenv('COMPOSER_HOME=/tmp');
+        if (!getenv('COMPOSER_HOME')) {
+            $home = getenv('HOME');
+            if (!$home || !is_dir($home) || !is_writable($home)) {
+                // Set our own directory
+                putenv('COMPOSER_HOME=' . sys_get_temp_dir());
+            }
         }
 
         $originalDir = getcwd();
