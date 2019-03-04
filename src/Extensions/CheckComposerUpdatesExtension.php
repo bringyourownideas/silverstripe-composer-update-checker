@@ -38,7 +38,9 @@ class CheckComposerUpdatesExtension extends Extension
         // Fetch types of packages that are "allowed" - ie. dependencies that we actually care about
         $allowedTypes = (array) Config::inst()->get(UpdatePackageInfoTask::class, 'allowed_types');
         $composerPackagesAndConstraints = $this->owner->getComposerLoader()->getPackages($allowedTypes);
-        $ignoredPackages = (array) Config::inst()->get(self::class, 'ignored_packages');
+        
+        // Fetch names of Packages that should be "ignored"
+        $ignoredPackages = (array) Config::inst()->get(UpdatePackageInfoTask::class, 'ignored_packages');
 
         // Loop list of packages given by owner task
         foreach ($installedPackageList as &$installedPackage) {
