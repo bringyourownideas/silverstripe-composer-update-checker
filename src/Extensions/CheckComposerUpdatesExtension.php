@@ -19,6 +19,14 @@ use UpdatePackageInfoTask;
  */
 class CheckComposerUpdatesExtension extends Extension
 {
+    /**
+     * Lists packages that will be ignored by the Composer update checker
+     *
+     * @config
+     * @var string[]
+     */
+    private static $ignored_packages = [];
+
     private static $dependencies = [
         'UpdateChecker' => '%$BringYourOwnIdeas\\UpdateChecker\\UpdateChecker',
     ];
