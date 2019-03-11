@@ -19,6 +19,14 @@ use UpdatePackageInfoTask;
  */
 class CheckComposerUpdatesExtension extends Extension
 {
+    /**
+     * Lists packages that will be ignored by the Composer update checker
+     *
+     * @config
+     * @var string[]
+     */
+    private static $ignored_packages = [];
+
     private static $dependencies = [
         'UpdateChecker' => '%$BringYourOwnIdeas\\UpdateChecker\\UpdateChecker',
     ];
@@ -38,6 +46,9 @@ class CheckComposerUpdatesExtension extends Extension
         // Fetch types of packages that are "allowed" - ie. dependencies that we actually care about
         $allowedTypes = (array) Config::inst()->get(UpdatePackageInfoTask::class, 'allowed_types');
         $composerPackagesAndConstraints = $this->owner->getComposerLoader()->getPackages($allowedTypes);
+        
+        // Fetch names of Packages that should be "ignored"
+        $ignoredPackages = (array) Config::inst()->get(UpdatePackageInfoTask::class, 'ignored_packages');
 
         // Loop list of packages given by owner task
         foreach ($installedPackageList as &$installedPackage) {
@@ -46,6 +57,11 @@ class CheckComposerUpdatesExtension extends Extension
                 continue;
             }
             $packageName = $installedPackage['Name'];
+
+            // Continue if the package is ignored
+            if ($ignoredPackages && in_array($packageName, $ignoredPackages)) {
+                continue;
+            }
 
             // Continue if we have no composer constraint details
             if (!isset($composerPackagesAndConstraints[$packageName])) {
