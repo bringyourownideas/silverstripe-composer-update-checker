@@ -6,6 +6,7 @@ use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use BringYourOwnIdeas\UpdateChecker\UpdateChecker;
 use Composer\Composer;
 use Injector;
+use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 use SapphireTest;
 
@@ -16,19 +17,14 @@ class UpdateCheckerTest extends SapphireTest
 {
     protected $usesDatabase = true;
 
+    /**
+     * @var UpdateChecker&PHPUnit_Framework_MockObject_MockObject
+     */
     protected $updateChecker;
 
     public function setUp()
     {
         parent::setUp();
-
-        // Mock composer and composer loader
-        $composer = $this->getMock(Composer::Class);
-        $composerLoader = $this->getMockBuilder(ComposerLoader::class)
-            ->setMethods(['getComposer'])
-            ->getMock();
-        $composerLoader->expects($this->once())->method('getComposer')->will($this->returnValue($composer));
-        Injector::inst()->registerService($composerLoader, ComposerLoader::class);
 
         // Partially mock UpdateChecker
         $this->updateChecker = $this->getMockBuilder(UpdateChecker::class)
