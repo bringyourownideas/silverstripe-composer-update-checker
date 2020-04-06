@@ -120,10 +120,17 @@ class ComposerLoaderExtension extends Extension
         }
 
         $originalDir = getcwd();
-        chdir(BASE_PATH);
+
+        if ($originalDir !== BASE_PATH) {
+            chdir(BASE_PATH);
+        }
+
         /** @var Composer $composer */
         $composer = Factory::create(new NullIO());
         $this->setComposer($composer);
-        chdir($originalDir);
+
+        if ($originalDir !== BASE_PATH) {
+            chdir($originalDir);
+        }
     }
 }
