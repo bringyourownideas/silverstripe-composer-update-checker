@@ -21,7 +21,7 @@ class UpdateCheckerTest extends SapphireTest
      */
     protected $updateChecker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

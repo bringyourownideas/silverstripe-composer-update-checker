@@ -30,7 +30,7 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
      */
     protected $allowedTypes;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
