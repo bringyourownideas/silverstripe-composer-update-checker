@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.3 || ^8.0",
-        "composer/composer": "^1",
+        "composer/composer": "^1.10",
         "silverstripe/framework": "^4.10",
         "bringyourownideas/silverstripe-maintenance": "^2"
     },
@@ -45,11 +45,6 @@
         "psr-4": {
             "BringYourOwnIdeas\\UpdateChecker\\": "src/",
             "BringYourOwnIdeas\\UpdateChecker\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.x-dev"
         }
     },
     "replace": {
