@@ -48,7 +48,10 @@ will need to have the necessary permissions to access the private VCS repositori
 update information about necessary updates to the module.
 
 If the process looking for available updates fails (for example, due to an authentication failure against a private
-repository) the process will fail gracefully and allow the rest of the report generation to continue.
+repository) the process will fail gracefully and allow the rest of the report generation to continue. However, this
+can result in incomplete information being fetched about non-private repositories due to the way composer checks for
+conflicts between packages. For this reason, if you cannot supply authentication details for private repositories,
+you should mark those repositories as inaccessible as per the documentation in the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance#private-repositories).
 
 Users on the [Common Web Platform](https://cwp.govt.nz) will currently not be able to retrieve information about
 updates to private repositories.

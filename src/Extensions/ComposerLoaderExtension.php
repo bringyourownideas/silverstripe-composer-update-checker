@@ -2,6 +2,8 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
+use BringYourOwnIdeas\Maintenance\Tasks\UpdatePackageInfoTask;
+use BringYourOwnIdeas\UpdateChecker\DriverReflection;
 use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
@@ -10,6 +12,9 @@ use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
 use Composer\Repository\CompositeRepository;
 use Composer\Repository\RepositoryInterface;
+use Composer\Repository\RepositoryManager;
+use Composer\Repository\Vcs\VcsDriverInterface;
+use Composer\Repository\VcsRepository;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Extension;
 
@@ -120,17 +125,71 @@ class ComposerLoaderExtension extends Extension
         }
 
         $originalDir = getcwd();
+        chdir(BASE_PATH);
+        /** @var Composer $composer */
+        $composer = Factory::create($io = new NullIO());
 
-        if ($originalDir !== BASE_PATH) {
-            chdir(BASE_PATH);
+        // Don't include inaccessible repositories.
+        $inaccessiblePackages = (array)UpdatePackageInfoTask::config()->get('inaccessible_packages');
+        $inaccessibleHosts = (array)UpdatePackageInfoTask::config()->get('inaccessible_repository_hosts');
+        if (!empty($inaccessiblePackages) || !empty($inaccessibleHosts)) {
+            $oldManager = $composer->getRepositoryManager();
+            $manager = new RepositoryManager(
+                $io,
+                $composer->getConfig(),
+                $composer->getEventDispatcher(),
+                Factory::createRemoteFilesystem($io, $composer->getConfig())
+            );
+            $manager->setLocalRepository($oldManager->getLocalRepository());
+            foreach ($oldManager->getRepositories() as $repo) {
+                if ($repo instanceof VcsRepository) {
+                    /** @var VcsDriverInterface $driver */
+                    $driver = DriverReflection::getDriverWithoutException($repo, $io, $composer->getConfig());
+                    $sshUrl = DriverReflection::getSshUrl($driver);
+                    $sourceURL = $driver->getUrl();
+                    $package = $this->findPackageByUrl($sourceURL);
+                    if (!$package && $sshUrl) {
+                        $package = $this->findPackageByUrl($sshUrl);
+                    }
+                    // Don't add the repository if we can confirm it's inaccessible.
+                    // Otherwise the UpdateChecker will attempt to fetch packages using the VcsDriver.
+                    if (
+                        ($package && in_array($package->name, $inaccessiblePackages))
+                        || in_array(parse_url($sourceURL, PHP_URL_HOST), $inaccessibleHosts)
+                        || ($sshUrl && in_array(preg_replace('/^([^@]+@)?([^:]+):.*/', '$2', $sshUrl), $inaccessibleHosts))
+                    ) {
+                        continue;
+                    }
+                }
+                $manager->addRepository($repo);
+            }
+            $composer->setRepositoryManager($manager);
         }
 
-        /** @var Composer $composer */
-        $composer = Factory::create(new NullIO());
         $this->setComposer($composer);
+        chdir($originalDir);
+    }
 
-        if ($originalDir !== BASE_PATH) {
-            chdir($originalDir);
+    public function findPackageByUrl(string $url, bool $includeDev = true)
+    {
+        $lock = $this->owner->getLock();
+        foreach ($lock->packages as $package) {
+            if (isset($package->source->url) && $package->source->url === $url) {
+                return $package;
+            }
+            if (isset($package->dist->url) && $package->dist->url === $url) {
+                return $package;
+            }
+        }
+        if ($includeDev) {
+            foreach ($lock->{'packages-dev'} as $package) {
+                if (isset($package->source->url) && $package->source->url === $url) {
+                    return $package;
+                }
+                if (isset($package->dist->url) && $package->dist->url === $url) {
+                    return $package;
+                }
+            }
         }
     }
 }
