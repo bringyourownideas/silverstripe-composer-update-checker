@@ -47,11 +47,6 @@
             "BringYourOwnIdeas\\UpdateChecker\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.x-dev"
-        }
-    },
     "replace": {
         "spekulatius/silverstripe-composer-update-checker": "self.version"
     },
