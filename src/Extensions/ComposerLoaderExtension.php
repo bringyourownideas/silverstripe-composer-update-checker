@@ -53,7 +53,7 @@ class ComposerLoaderExtension extends Extension
         $repository = $this->getRepository();
         foreach ($repository->getPackages() as $package) {
             // Filter out packages that are not "allowed types"
-            if (is_array($allowedTypes) && !in_array($package->getType(), $allowedTypes)) {
+            if (is_array($allowedTypes) && !in_array($package->getType(), $allowedTypes ?? [])) {
                 continue;
             }
 
@@ -113,7 +113,7 @@ class ComposerLoaderExtension extends Extension
         // Mock COMPOSER_HOME if it's not defined already. Composer requires one of the two to be set.
         if (!Environment::getEnv('COMPOSER_HOME')) {
             $home = Environment::getEnv('HOME');
-            if (!$home || !is_dir($home) || !is_writable($home)) {
+            if (!$home || !is_dir($home ?? '') || !is_writable($home ?? '')) {
                 // Set our own directory
                 putenv('COMPOSER_HOME=' . sys_get_temp_dir());
             }
@@ -130,7 +130,7 @@ class ComposerLoaderExtension extends Extension
         $this->setComposer($composer);
 
         if ($originalDir !== BASE_PATH) {
-            chdir($originalDir);
+            chdir($originalDir ?? '');
         }
     }
 }

@@ -117,7 +117,7 @@ class UpdateChecker
         }
 
         $targetVersion = null;
-        if (0 === strpos($installedVersion, 'dev-')) {
+        if (0 === strpos($installedVersion ?? '', 'dev-')) {
             $targetVersion = $installedVersion;
         }
 
