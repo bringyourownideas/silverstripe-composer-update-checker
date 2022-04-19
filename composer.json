@@ -33,7 +33,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4 || ^8.0",
-        "composer/composer": "^1.10",
+        "composer/composer": "^1.10 || ^2",
         "silverstripe/framework": "^4.10",
         "bringyourownideas/silverstripe-maintenance": "^2"
     },

@@ -9,6 +9,8 @@ use Composer\Package\Link;
 use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
 use Composer\Repository\CompositeRepository;
+use Composer\Repository\InstalledRepository;
+use Composer\Repository\RootPackageRepository;
 use Composer\Repository\RepositoryInterface;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Extension;
@@ -56,9 +58,14 @@ class ComposerLoaderExtension extends Extension
             if (is_array($allowedTypes) && !in_array($package->getType(), $allowedTypes)) {
                 continue;
             }
-
             // Find the constraint used for installation
-            $constraint = $this->getInstalledConstraint($repository, $package->getName());
+            if (class_exists(InstalledRepository::class)) {
+                // composer v2
+                $constraint = $this->getConstraint($repository, $package->getName());
+            } else {
+                // composer v1
+                $constraint = $this->getInstalledConstraint($repository, $package->getName());
+            }
             $packages[$package->getName()] = [
                 'constraint' => $constraint,
                 'package' => $package,
@@ -76,20 +83,46 @@ class ComposerLoaderExtension extends Extension
     {
         /** @var Composer $composer */
         $composer = $this->getComposer();
-
-        /** @var BaseRepository $repository */
-        return new CompositeRepository([
-            new ArrayRepository([$composer->getPackage()]),
-            $composer->getRepositoryManager()->getLocalRepository(),
-        ]);
+        $localRepo = $composer->getRepositoryManager()->getLocalRepository();
+        if (class_exists(InstalledRepository::class)) {
+            // composer v2
+            return new InstalledRepository([
+                new RootPackageRepository($composer->getPackage()),
+                $localRepo
+            ]);
+        } else {
+            // composer v1
+            return new CompositeRepository([
+                new ArrayRepository([$composer->getPackage()]),
+                $localRepo
+            ]);
+        }
     }
 
     /**
+     * This method only works with composer v2
+     *
      * Find all dependency constraints for the given package in the current repository and return the strictest one
+     */
+    protected function getConstraint(InstalledRepository $repository, string $packageName): string
+    {
+        $constraints = [];
+        foreach ($repository->getDependents($packageName) as $dependent) {
+            /** @var Link $link */
+            list (, $link) = $dependent;
+            $constraints[] = $link->getPrettyConstraint();
+        }
+        usort($constraints, 'version_compare');
+        return array_pop($constraints);
+    }
+
+    /**
+     * This method only works with composer v1
      *
      * @param BaseRepository $repository
      * @param string $packageName
      * @return string
+     * @deprecated since 2.2, use getConstraint() instead.
      */
     protected function getInstalledConstraint(BaseRepository $repository, $packageName)
     {
@@ -99,9 +132,7 @@ class ComposerLoaderExtension extends Extension
             list (, $link) = $dependent;
             $constraints[] = $link->getPrettyConstraint();
         }
-
         usort($constraints, 'version_compare');
-
         return array_pop($constraints);
     }
 

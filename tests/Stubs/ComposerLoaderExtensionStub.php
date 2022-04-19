@@ -6,6 +6,8 @@ use BringYourOwnIdeas\UpdateChecker\Extensions\ComposerLoaderExtension;
 use Composer\Package\Package;
 use Composer\Repository\ArrayRepository;
 use Composer\Repository\BaseRepository;
+use Composer\Repository\InstalledRepository;
+use Composer\Repository\InstalledArrayRepository;
 use SilverStripe\Dev\TestOnly;
 
 /**
@@ -24,10 +26,27 @@ class ComposerLoaderExtensionStub extends ComposerLoaderExtension implements Tes
         $generalPackage = new Package('something/unrelated', '1.2.3.4', '1.2.3');
         $generalPackage->setType('package');
 
-        return new ArrayRepository([$vendorModule, $silverstripeModule, $generalPackage]);
+        // InstalledRepository is only available in composer v2
+        if (class_exists(InstalledRepository::class)) {
+            return new InstalledRepository([
+                new InstalledArrayRepository([$vendorModule, $silverstripeModule, $generalPackage])
+            ]);
+        } else {
+            return new ArrayRepository([$vendorModule, $silverstripeModule, $generalPackage]);
+        }
+    }
+
+    protected function getConstraint(InstalledRepository $repository, string $packageName): string
+    {
+        return $this->getPackageConstraint($packageName);
     }
 
     protected function getInstalledConstraint(BaseRepository $repository, $packageName)
+    {
+        return $this->getPackageConstraint($packageName);
+    }
+
+    private function getPackageConstraint($packageName)
     {
         switch ($packageName) {
             case 'silverstripe/framework':
