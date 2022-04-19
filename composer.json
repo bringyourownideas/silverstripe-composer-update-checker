@@ -32,8 +32,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.3 || ^8.0",
-        "composer/composer": "^1",
+        "php": "^7.4 || ^8.0",
+        "composer/composer": "^1.10",
         "silverstripe/framework": "^4.10",
         "bringyourownideas/silverstripe-maintenance": "^2"
     },
