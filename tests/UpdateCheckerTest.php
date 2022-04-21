@@ -55,7 +55,6 @@ class UpdateCheckerTest extends SapphireTest
             ->method('findLatestPackage')
             ->will($this->returnValue($mockPackage));
 
-
         $result = $this->updateChecker->checkForUpdates($mockPackage, '~1.2.0');
         $this->assertArrayNotHasKey('AvailableVersion', $result, 'No available update is recorded');
         $this->assertArrayNotHasKey('AvailableHash', $result, 'No available update is recorded');
