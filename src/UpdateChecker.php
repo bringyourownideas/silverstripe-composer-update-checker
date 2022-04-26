@@ -4,11 +4,11 @@ namespace BringYourOwnIdeas\UpdateChecker;
 
 use BringYourOwnIdeas\Maintenance\Util\ComposerLoader;
 use Composer\Composer;
-use Composer\DependencyResolver\Pool;
 use Composer\Package\BasePackage;
 use Composer\Package\PackageInterface;
 use Composer\Package\Version\VersionSelector;
 use Composer\Repository\CompositeRepository;
+use Composer\Repository\RepositorySet;
 use SilverStripe\Core\Injector\Injector;
 
 /**
@@ -71,15 +71,14 @@ class UpdateChecker
     {
         if (!$this->versionSelector) {
             // Instantiate a new repository pool, providing the stability flags from the project
-            $pool = new Pool(
+            $respositorySet = new RepositorySet(
                 $composer->getPackage()->getMinimumStability(),
                 $composer->getPackage()->getStabilityFlags()
             );
-            $pool->addRepository(new CompositeRepository($composer->getRepositoryManager()->getRepositories()));
-
-            $this->versionSelector = new VersionSelector($pool);
+            $repo = new CompositeRepository($composer->getRepositoryManager()->getRepositories());
+            $respositorySet->addRepository($repo);
+            $this->versionSelector = new VersionSelector($respositorySet);
         }
-
         return $this->versionSelector;
     }
 
@@ -117,7 +116,7 @@ class UpdateChecker
         }
 
         $targetVersion = null;
-        if (0 === strpos($installedVersion, 'dev-')) {
+        if (0 === strpos($installedVersion ?? '', 'dev-')) {
             $targetVersion = $installedVersion;
         }
 
@@ -126,6 +125,6 @@ class UpdateChecker
             $targetVersion = $constraint;
         }
 
-        return $versionSelector->findBestCandidate($name, $targetVersion, null, $bestStability);
+        return $versionSelector->findBestCandidate($name, $targetVersion, $bestStability);
     }
 }
