@@ -6,9 +6,8 @@ use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
 use Composer\Package\Link;
-use Composer\Repository\ArrayRepository;
-use Composer\Repository\BaseRepository;
-use Composer\Repository\CompositeRepository;
+use Composer\Repository\InstalledRepository;
+use Composer\Repository\RootPackageRepository;
 use Composer\Repository\RepositoryInterface;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Extension;
@@ -40,11 +39,10 @@ class ComposerLoaderExtension extends Extension
 
     /**
      * Retrieve an array of primary composer dependencies from composer.json.
-     *
      * Packages are filtered by allowed type.
+     * Dependencies in composer.json that do not match any of the given types are not returned.
      *
-     * @param array|null $allowedTypes An array of "allowed" package types. Dependencies in composer.json that do not
-     *                                 match any of the given types are not returned.
+     * @param array|null $allowedTypes An array of "allowed" package types.
      * @return array[]
      */
     public function getPackages(array $allowedTypes = null)
@@ -69,39 +67,29 @@ class ComposerLoaderExtension extends Extension
 
     /**
      * Provides access to the Composer repository
-     *
-     * @return RepositoryInterface
      */
-    protected function getRepository()
+    protected function getRepository(): RepositoryInterface
     {
         /** @var Composer $composer */
         $composer = $this->getComposer();
-
-        /** @var BaseRepository $repository */
-        return new CompositeRepository([
-            new ArrayRepository([$composer->getPackage()]),
-            $composer->getRepositoryManager()->getLocalRepository(),
+        return new InstalledRepository([
+            new RootPackageRepository($composer->getPackage()),
+            $composer->getRepositoryManager()->getLocalRepository()
         ]);
     }
 
     /**
      * Find all dependency constraints for the given package in the current repository and return the strictest one
-     *
-     * @param BaseRepository $repository
-     * @param string $packageName
-     * @return string
      */
-    protected function getInstalledConstraint(BaseRepository $repository, $packageName)
+    protected function getInstalledConstraint(InstalledRepository $repository, string $packageName): string
     {
         $constraints = [];
         foreach ($repository->getDependents($packageName) as $dependent) {
             /** @var Link $link */
             list (, $link) = $dependent;
-            $constraints[] = $link->getPrettyConstraint();
+            $constraints[] = $link->getPrettyConstraint() ?? '';
         }
-
         usort($constraints, 'version_compare');
-
         return array_pop($constraints);
     }
 

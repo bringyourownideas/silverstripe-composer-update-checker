@@ -22,13 +22,16 @@ the command line to install or update PHP packages.
 ### Requirements
 
 * bringyourownideas/silverstripe-maintenance ^2
-* composer/composer ^1
+* composer/composer ^2
 * silverstripe/framework ^4
 
 #### Compatibility
 
 The 1.x release line of this module is compatible with SilverStripe ^3.2, and the 2.x release line is compatible with
 SilverStripe ^4.0.
+
+The 2.x release line of the module is compatible with composer v1, and this 3.x release line is
+compatible with composer v2
 
 ### Installation
 
