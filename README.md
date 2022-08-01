@@ -1,19 +1,13 @@
-# SilverStripe Composer update checker
+# Silverstripe Composer update checker
 
-[![Build Status](https://api.travis-ci.org/bringyourownideas/silverstripe-composer-update-checker.svg?branch=master)](https://travis-ci.org/bringyourownideas/silverstripe-composer-update-checker)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/bringyourownideas/silverstripe-composer-update-checker.svg)](https://scrutinizer-ci.com/g/bringyourownideas/silverstripe-composer-update-checker?branch=master)
-[![codecov](https://codecov.io/gh/bringyourownideas/silverstripe-composer-update-checker/branch/master/graph/badge.svg)](https://codecov.io/gh/bringyourownideas/silverstripe-composer-update-checker)
-[![SilverStripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
-[![Latest Stable Version](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/version.svg)](https://github.com/bringyourownideas/silverstripe-composer-update-checker/releases)
-[![Latest Unstable Version](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/v/unstable.svg)](https://packagist.org/packages/bringyourownideas/silverstripe-composer-update-checker)
-[![Total Downloads](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/downloads.svg)](https://packagist.org/packages/bringyourownideas/silverstripe-composer-update-checker)
-[![License](https://poser.pugx.org/bringyourownideas/silverstripe-composer-update-checker/license.svg)](https://github.com/bringyourownideas/silverstripe-composer-update-checker/blob/master/license.md)
+[![CI](https://github.com/bringyourownideas/silverstripe-composer-update-checker/actions/workflows/ci.yml/badge.svg)](https://github.com/bringyourownideas/silverstripe-composer-update-checker/actions/workflows/ci.yml)
+[![Silverstripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
 
 Checks if any of your Composer dependencies needs to be updated, and tracks the available and latest versions that can
 be updated to.
 
 This module only runs the actual checks and saves the information into fields on the Package DataObject. The fields
-are also added to the report that the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance)
+are also added to the report that the [Silverstripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance)
 provides.
 
 The bulk of the heavy lifting here is done using the Composer PHP API, which mimics the behaviour of using Composer on
@@ -27,8 +21,8 @@ the command line to install or update PHP packages.
 
 #### Compatibility
 
-The 1.x release line of this module is compatible with SilverStripe ^3.2, and the 2.x release line is compatible with
-SilverStripe ^4.0.
+The 1.x release line of this module is compatible with Silverstripe ^3.2, and the 2.x release line is compatible with
+Silverstripe ^4.0.
 
 ### Installation
 
@@ -55,7 +49,7 @@ updates to private repositories.
 
 ## Documentation
 
-Please see the user guide section of the [SilverStripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/master/docs/en/userguide).
+Please see the user guide section of the [Silverstripe Maintenance module](https://github.com/bringyourownideas/silverstripe-maintenance/tree/master/docs/en/userguide).
 
 ### Terminology
 
