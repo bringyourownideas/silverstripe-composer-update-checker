@@ -1,0 +1,4 @@
+en:
+  BringYourOwnIdeas\Maintenance\Model\Package:
+    db_AvailableVersion: Available
+    db_LatestVersion: Latest
