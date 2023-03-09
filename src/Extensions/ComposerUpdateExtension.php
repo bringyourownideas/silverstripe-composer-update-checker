@@ -21,8 +21,8 @@ class ComposerUpdateExtension extends DataExtension
     ];
 
     private static $summary_fields = [
-        'AvailableVersion' => 'Available',
-        'LatestVersion' => 'Latest',
+        'AvailableVersion',
+        'LatestVersion'
     ];
 
     /**
