@@ -34,8 +34,8 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "composer/composer": "^2",
-        "silverstripe/framework": "^4.10",
-        "bringyourownideas/silverstripe-maintenance": "^2"
+        "silverstripe/framework": "4.13.x-dev",
+        "bringyourownideas/silverstripe-maintenance": "2.7.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
