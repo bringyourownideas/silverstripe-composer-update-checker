@@ -13,29 +13,10 @@ provides.
 The bulk of the heavy lifting here is done using the Composer PHP API, which mimics the behaviour of using Composer on
 the command line to install or update PHP packages.
 
-### Requirements
+## Installation
 
-* bringyourownideas/silverstripe-maintenance ^2
-* composer/composer ^2
-* silverstripe/framework ^4
-
-#### Compatibility
-
-The 1.x release line of this module is compatible with Silverstripe ^3.2, and the 2.x release line is compatible with
-Silverstripe ^4.0.
-
-The 2.x release line of the module is compatible with composer v1, and this 3.x release line is
-compatible with composer v2
-
-### Installation
-
-Run the following command to install this package:
-
-```
-composer require bringyourownideas/silverstripe-composer-update-checker ^2
-
-vendor/bin/sake dev/build flush=1
-vendor/bin/sake dev/tasks/UpdatePackageInfoTask
+```sh
+composer require bringyourownideas/silverstripe-composer-update-checker
 ```
 
 ## Note for private repositories
