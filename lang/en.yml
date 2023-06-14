@@ -2,3 +2,10 @@ en:
   BringYourOwnIdeas\Maintenance\Model\Package:
     db_AvailableVersion: Available
     db_LatestVersion: Latest
+  BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension:
+    db_AvailableHash: 'Available hash'
+    db_AvailableVersion: 'Available version'
+    db_LatestHash: 'Latest hash'
+    db_LatestVersion: 'Latest version'
+    db_VersionConstraint: 'Version constraint'
+    db_VersionHash: 'Version hash'
