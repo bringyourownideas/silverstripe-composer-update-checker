@@ -1,0 +1,4 @@
+sl:
+  BringYourOwnIdeas\Maintenance\Model\Package:
+    db_AvailableVersion: 'Na voljo'
+    db_LatestVersion: Najnovejši

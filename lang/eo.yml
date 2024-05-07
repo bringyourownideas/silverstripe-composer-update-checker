@@ -1,0 +1,11 @@
+eo:
+  BringYourOwnIdeas\Maintenance\Model\Package:
+    db_AvailableVersion: Disponebla
+    db_LatestVersion: Freŝaj
+  BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension:
+    db_AvailableHash: 'Disponebla haketaĵo'
+    db_AvailableVersion: 'Disponebla versio'
+    db_LatestHash: 'Lasta haketaĵo'
+    db_LatestVersion: 'Lasta versio'
+    db_VersionConstraint: 'Versia limigo'
+    db_VersionHash: 'Versia haketaĵo'

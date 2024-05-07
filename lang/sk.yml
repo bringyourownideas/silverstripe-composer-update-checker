@@ -1,0 +1,11 @@
+sk:
+  BringYourOwnIdeas\Maintenance\Model\Package:
+    db_AvailableVersion: 'K dispozícii'
+    db_LatestVersion: Najnovšia
+  BringYourOwnIdeas\UpdateChecker\Extensions\ComposerUpdateExtension:
+    db_AvailableHash: 'Dostupný hash'
+    db_AvailableVersion: 'Dostupná verzia'
+    db_LatestHash: 'Najnovší hash'
+    db_LatestVersion: 'Najnovšia verzia'
+    db_VersionConstraint: 'Obmedzenie verzie'
+    db_VersionHash: 'Hash verzie'
