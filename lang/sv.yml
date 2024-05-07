@@ -1,0 +1,4 @@
+sv:
+  BringYourOwnIdeas\Maintenance\Model\Package:
+    db_AvailableVersion: Tillgänglig
+    db_LatestVersion: Senaste
