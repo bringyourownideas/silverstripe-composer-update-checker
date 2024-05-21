@@ -34,7 +34,7 @@ class CheckComposerUpdatesExtension extends Extension
      *
      * @param array[] $installedPackageList
      */
-    public function updatePackageInfo(array &$installedPackageList)
+    protected function updatePackageInfo(array &$installedPackageList)
     {
         // Fetch types of packages that are "allowed" - ie. dependencies that we actually care about
         $allowedTypes = (array) Config::inst()->get(UpdatePackageInfoTask::class, 'allowed_types');
