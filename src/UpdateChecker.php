@@ -51,13 +51,13 @@ class UpdateChecker
         ];
 
         if ($available = $this->findLatestPackage($package, $constraint, $installedVersion, $composer, true)) {
-            $updateInformation[self::TYPE_AVAILABLE . 'Version'] = $available->getPrettyVersion();
-            $updateInformation[self::TYPE_AVAILABLE . 'Hash'] = $available->getSourceReference();
+            $updateInformation[UpdateChecker::TYPE_AVAILABLE . 'Version'] = $available->getPrettyVersion();
+            $updateInformation[UpdateChecker::TYPE_AVAILABLE . 'Hash'] = $available->getSourceReference();
         }
 
         if ($latest = $this->findLatestPackage($package, $constraint, $installedVersion, $composer, false)) {
-            $updateInformation[self::TYPE_LATEST . 'Version'] = $latest->getPrettyVersion();
-            $updateInformation[self::TYPE_LATEST . 'Hash'] = $latest->getSourceReference();
+            $updateInformation[UpdateChecker::TYPE_LATEST . 'Version'] = $latest->getPrettyVersion();
+            $updateInformation[UpdateChecker::TYPE_LATEST . 'Hash'] = $latest->getSourceReference();
         }
 
         return $updateInformation;
