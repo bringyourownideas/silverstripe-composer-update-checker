@@ -44,7 +44,7 @@ class ComposerLoaderExtensionStub extends ComposerLoaderExtension implements Tes
         }
     }
 
-    public function onAfterBuild()
+    protected function onAfterBuild()
     {
         // noop - don't load local Composer repository
     }

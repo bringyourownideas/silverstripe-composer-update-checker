@@ -96,7 +96,7 @@ class ComposerLoaderExtension extends Extension
     /**
      * Builds an instance of Composer
      */
-    public function onAfterBuild()
+    protected function onAfterBuild()
     {
         // Mock COMPOSER_HOME if it's not defined already. Composer requires one of the two to be set.
         if (!Environment::getEnv('COMPOSER_HOME')) {
