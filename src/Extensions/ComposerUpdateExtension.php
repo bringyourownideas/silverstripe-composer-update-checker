@@ -2,14 +2,14 @@
 
 namespace BringYourOwnIdeas\UpdateChecker\Extensions;
 
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 
 /**
  * Describes any available updates to an installed Composer package
  *
  * Originally from https://github.com/XploreNet/silverstripe-composerupdates
  */
-class ComposerUpdateExtension extends DataExtension
+class ComposerUpdateExtension extends Extension
 {
     private static $db = [
         'VersionHash' => 'Varchar',
