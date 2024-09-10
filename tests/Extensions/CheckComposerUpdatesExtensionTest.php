@@ -43,7 +43,7 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
         $this->task = UpdatePackageInfoTask::create();
 
         // Create a partial mock of the update checker
-        $updateCheckerMock = $this->getMockBuilder(UpdateChecker::class)->setMethods(['checkForUpdates'])->getMock();
+        $updateCheckerMock = $this->getMockBuilder(UpdateChecker::class)->onlyMethods(['checkForUpdates'])->getMock();
         $this->task->setUpdateChecker($updateCheckerMock);
 
         $this->allowedTypes = ['silverstripe-module', 'silverstripe-vendormodule', 'silverstripe-theme'];
@@ -55,7 +55,7 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
         $this->task->getUpdateChecker()->expects($this->atLeastOnce())
             ->method('checkForUpdates')
             ->with($this->isInstanceOf(PackageInterface::class), $this->isType('string'))
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->runTask();
     }
@@ -67,7 +67,7 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
             ->with($this->callback(function ($argument) {
                 return in_array($argument->getType(), $this->allowedTypes);
             }))
-            ->will($this->returnValue([]));
+            ->willReturn([]);
 
         $this->runTask();
     }
