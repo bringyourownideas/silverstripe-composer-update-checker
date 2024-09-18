@@ -23,16 +23,22 @@ class UpdateCheckerTest extends SapphireTest
 
         // Mock composer and composer loader
         $composer = $this->getMockBuilder(Composer::class)->getMock();
-        $composerLoader = $this->getMockBuilder(ComposerLoader::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getComposer'])
-            ->getMock();
-        $composerLoader->expects($this->once())->method('getComposer')->will($this->returnValue($composer));
+        $composerLoader = new class ($composer) extends ComposerLoader {
+            private $composer;
+            public function __construct($composer)
+            {
+                $this->composer = $composer;
+            }
+            public function getComposer(): Composer
+            {
+                return $this->composer;
+            }
+        };
         Injector::inst()->registerService($composerLoader, ComposerLoader::class);
 
         // Partially mock UpdateChecker
         $this->updateChecker = $this->getMockBuilder(UpdateChecker::class)
-            ->setMethods(['findLatestPackage'])
+            ->onlyMethods(['findLatestPackage'])
             ->getMock();
     }
 
