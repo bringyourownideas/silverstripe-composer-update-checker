@@ -12,6 +12,8 @@ use PHPUnit_Framework_TestCase;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\SapphireTest;
+use SilverStripe\PolyExecution\PolyOutput;
+use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * @mixin PHPUnit_Framework_TestCase
@@ -80,7 +82,10 @@ class CheckComposerUpdatesExtensionTest extends SapphireTest
     protected function runTask()
     {
         ob_start();
-        $this->task->run(null);
+        $output = PolyOutput::create(PolyOutput::FORMAT_ANSI);
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+        $this->task->run($input, $output);
         return ob_get_clean();
     }
 }
