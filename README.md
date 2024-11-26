@@ -1,7 +1,6 @@
 # Silverstripe Composer update checker
 
 [![CI](https://github.com/bringyourownideas/silverstripe-composer-update-checker/actions/workflows/ci.yml/badge.svg)](https://github.com/bringyourownideas/silverstripe-composer-update-checker/actions/workflows/ci.yml)
-[![Silverstripe supported module](https://img.shields.io/badge/silverstripe-supported-0071C4.svg)](https://www.silverstripe.org/software/addons/silverstripe-commercially-supported-module-list/)
 
 Checks if any of your Composer dependencies needs to be updated, and tracks the available and latest versions that can
 be updated to.
